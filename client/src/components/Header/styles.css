@@ -1,0 +1,81 @@
+.header-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+
+  background: linear-gradient(to right, #99661f, #1a1104ce, #1a1104ce);
+
+  display: inline-flex;
+  padding: 0px 5%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-container .logo {
+  cursor: pointer;
+
+  user-select: none;
+}
+
+.header-container ul {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-left: 20%;
+
+  list-style: none;
+}
+
+.header-container ul li {
+  margin: 0px 15%;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 21px;
+  color: #aaa69d;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition: .4s;
+}
+
+.header-container ul li:hover {
+  font-size: 23px;
+
+  border-bottom: 1.6px solid #84817a;
+}
+
+.header-container .profile-button {
+  border: 2.2px solid #84817a;
+
+  height: 60px;
+  width: 60px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 30px;
+  color: #84817a;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+  outline: none;
+
+  transition: .4s;
+}
+
+.header-container .profile-button:hover {
+  border-color: #aaa69d;
+
+  font-size: 32px;
+
+  height: 65px;
+  width: 65px;
+}
+
