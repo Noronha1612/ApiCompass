@@ -57,6 +57,14 @@ class apiController {
       return response.status(400).json({ message: 'An error has ocurred while trying register your api' });
     }
   }
+
+  async delete(request: Request, response: Response) {
+    const { api_id } = request.params;
+
+    await knex('apis').delete('*').where({ id: api_id });
+
+    return response.json({ deletedApiId: api_id });
+  }
 }
 
 export default apiController;
