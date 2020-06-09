@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import { errors } from 'celebrate';
 
 import routes from './routes';
 
@@ -11,6 +12,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use(routes);
+
+app.use( errors() );
 
 app.listen(port, err => {
   if (err) console.log(err);
