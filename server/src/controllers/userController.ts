@@ -44,7 +44,6 @@ class userController {
     return response.json(users)
   }
 
-  async 
 }
 
 export default userController;
