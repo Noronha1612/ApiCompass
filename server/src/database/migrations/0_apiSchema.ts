@@ -7,6 +7,7 @@ export async function up(knex: Knex) {
     table.string('description').notNullable();
     table.string('mainUrl').notNullable();
     table.string('documentationUrl');
+    table.string('user_api_id').notNullable();
   });
 }
 
