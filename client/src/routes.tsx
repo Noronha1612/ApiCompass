@@ -6,9 +6,9 @@ import Home from './pages/Home';
 const Routes = () => {
   return (
     <BrowserRouter>
-      <Route exact path="/" component={Home} />
+      <Route path="/" exact component={ Home } />
     </BrowserRouter>
-  )
+  );
 }
 
 export default Routes;

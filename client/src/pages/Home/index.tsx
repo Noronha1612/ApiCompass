@@ -1,15 +1,14 @@
 import React from 'react';
 
-import './styles.css';
-
 import Header from '../../components/Header';
+
+import "./styles.css";
 
 const Home = () => {
   return (
     <>
       <Header />
-
-      <div className="content">
+      <div className="home-container">
         Home
       </div>
     </>

@@ -9,8 +9,13 @@ class userController {
         name,
         email,
         password,
+        confirmPassword,
         country,
       } = request.body;
+
+      if ( password !== confirmPassword ) {
+        return response.status(400).json({ message: "The passwords don't matches" });
+      }
 
       const cipher = crypto.createCipher('aes-256-gcm', 'userEncrypt');
       
@@ -39,7 +44,9 @@ class userController {
   async index(request: Request, response: Response) {
     const { user_id } = request.query;
 
-    const users = await knex('users').select(['id', 'name', 'email', 'country', 'api_ids']).where({ id: user_id }).first();
+    const users = user_id ? 
+      await knex('users').select(['id', 'name', 'email', 'country', 'api_ids']).where({ id: user_id }).first() :
+      await knex('users').select(['id', 'name', 'email', 'country', 'api_ids']);
 
     return response.json(users)
   }
