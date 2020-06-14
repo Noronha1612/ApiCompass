@@ -1,3 +1,38 @@
-.home-container {
+.blue-section {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 0 4%;
   margin-top: 80px;
+
+  height: 600px;
+  width: 100%;
+
+  background: linear-gradient(to right, #101435, #101a64,#1a2caa);
+}
+
+.blue-section img {
+  height: 420px;
+}
+
+.blue-section .text-box {
+  font-family: 'Roboto', sans-serif;
+}
+
+.blue-section .text-box h1 {
+  color: #bfbfbf;
+  text-shadow: 7px 7px 8px rgba(0, 0, 0, .45);
+
+  margin-bottom: 35px;
+
+  font-size: 62px;
+}
+
+.blue-section .text-box h3 {
+  color: #bfbfbf;
+  text-shadow: 4px 4px 8px rgba(0, 0, 0, .45);
+
+  font-size: 22px;
+  width: 45%;
+  min-width: 200px;
 }

@@ -16,19 +16,20 @@
 
 .header-container .half {
   display: inline-flex;
-
-  width: 50%;
+  align-items: center;
   height: 100%;
 }
 
 .header-container #half1 {
-  align-items: center;
+  width: 60%;
+  min-width: 320px;
 }
 
 .header-container #half1 .logo-container {
   transition: .55s;
 
   height: 100%;
+  min-width: 80px;
 
   display: flex;
   justify-content: center;
@@ -54,7 +55,6 @@
 } 
 
 .header-container #half1 .search-box-unselected {
-
   border: 1.8px solid #b9c3d0;
 
   width: 50px;
@@ -73,12 +73,13 @@
 }
 
 .header-container #half1 .search-box-selected {
-  padding-right: 2.5%;
+  padding-right: 5.5%;
 
   border: 1.8px solid #b9c3d0;
   
   background: #b9c3d070;
-  width: 42%;
+  width: 52%;
+  min-width: 250px;
 
   display: inline-flex;
   justify-content: space-between;
@@ -93,6 +94,7 @@
 
 .header-container #half1 .search-box-selected input {
   width: 85%;
+  min-width: 125px;
   height: 60%;
 
   padding: 0px 2%;
@@ -108,8 +110,82 @@
   outline: none;
 }
 
-.header-container #half2 .item1 {
-  border-width: 1.2px 1.2px 0 0;
-  border-style: solid;
-  border-color: #000;
+.header-container #half2 {
+  align-items: center;
+  width: 50%;
+  min-width: 380px;
+  padding-left: 8%;
+  padding-right: 10%;
+  justify-content: space-between;
+}
+
+.header-container #half2 section {
+  display: inline-flex;
+  height: 100%;
+  width: 65%;
+  padding-right: 5%;
+  justify-content: space-between;
+}
+
+.header-container #half2 .item {
+  background: rgba(255, 255, 255, .2);
+
+  min-width: 34%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transform: skewX(-25deg);
+  transition: .4s;
+  overflow: hidden;
+  cursor: pointer
+}
+
+.header-container #half2 .item:hover {
+  background: rgba(255, 255, 255, .6);
+
+  min-width: 50%;
+}
+
+.header-container #half2 .item2 {
+  border-right: 2.2px solid #000;
+  border-left: 2.2px solid #000;
+}
+
+.header-container .item .itemtext {
+  transform: skewX(25deg);
+
+  font-size: 13px;
+  font-weight: bold;
+  font-family: 'Ubuntu', sans-serif;
+
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 1483px) {
+  .header-container .item .itemtext {
+    font-size: 9px;
+  }
+}
+
+.header-container #half2 .profile-button {
+  border: 1.8px solid #b9c3d0;
+
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 50%;
+  
+  transition: .4s;
+  cursor: pointer;
+}
+
+.header-container #half2 .profile-button:hover {
+  background: #b9c3d034;
 }

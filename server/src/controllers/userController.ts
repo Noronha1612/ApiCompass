@@ -29,7 +29,8 @@ class userController {
         email,
         password: encryptedPass,
         country,
-        api_ids: ''
+        api_ids: '',
+        liked_apis: ''
       }
 
       await knex('users').insert(data);
@@ -45,12 +46,11 @@ class userController {
     const { user_id } = request.query;
 
     const users = user_id ? 
-      await knex('users').select(['id', 'name', 'email', 'country', 'api_ids']).where({ id: user_id }).first() :
-      await knex('users').select(['id', 'name', 'email', 'country', 'api_ids']);
+      await knex('users').select(['id', 'name', 'email', 'country', 'api_ids', 'liked_apis']).where({ id: user_id }).first() :
+      await knex('users').select(['id', 'name', 'email', 'country', 'api_ids', 'liked_apis']);
 
     return response.json(users)
   }
-
 }
 
 export default userController;

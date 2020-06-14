@@ -8,6 +8,8 @@ export async function up(knex: Knex) {
     table.string('mainUrl').notNullable();
     table.string('documentationUrl');
     table.string('user_api_id').notNullable();
+    table.decimal('views').notNullable();
+    table.decimal('likes').notNullable();
   });
 }
 

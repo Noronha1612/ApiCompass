@@ -23,6 +23,19 @@ routes.post('/apis/create', celebrate({
   }).options({ allowUnknown: true })
 }), Apis.create);
 
+routes.put('/apis/incrementView', celebrate({
+  headers: Joi.object({
+    api_id: Joi.number().required().error(new Error('The Api Id is a required field'))
+  }).options({ allowUnknown: true })
+}), Apis.incrementViews);
+
+routes.put('/apis/incrementLikes', celebrate({
+  headers: Joi.object({
+    user_id: Joi.string().required().error(new Error('The User Id is a required field')),
+    api_id: Joi.number().required().error(new Error('The Api Id is a required field'))
+  }).options({ allowUnknown: true })
+}), Apis.incrementLikes);
+
 routes.delete('/apis/delete/:api_id', Apis.delete);
 
 routes.post('/users/create', celebrate({
@@ -30,6 +43,7 @@ routes.post('/users/create', celebrate({
     name: Joi.string().required().error(new Error('The Name is a required field')),
     email: Joi.string().email().required().error(new Error('The Email is a required field')),
     password: Joi.string().required().error(new Error('The Password is a required field')),
+    confirmPassword: Joi.string().required().error(new Error('The Confirm Password is a required field')),
     country: Joi.string().required().error(new Error('The Country is a required field'))
   }),
 }), Users.create);

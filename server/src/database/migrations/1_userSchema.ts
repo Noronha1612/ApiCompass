@@ -9,6 +9,7 @@ export async function up(knex: Knex) {
     table.string('country').notNullable();
     table.string('password').notNullable();
     table.string('api_ids');
+    table.string('liked_apis').notNullable();
   });
 }
 
