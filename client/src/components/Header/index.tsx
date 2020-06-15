@@ -119,9 +119,9 @@ const Header = () => {
           </div>
           <div 
             className="item item2"
-            onClick={() => { history.push('/support') }}
+            onClick={() => { history.push('/contact') }}
           >
-            <div className="itemtext">Support</div>
+            <div className="itemtext">Contact</div>
           </div>
           <div 
             className="item item3"

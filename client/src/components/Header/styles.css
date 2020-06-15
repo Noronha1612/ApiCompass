@@ -12,6 +12,7 @@
   align-items: center;
 
   padding-right: 0px 2%;
+  z-index: 9;
 }
 
 .header-container .half {

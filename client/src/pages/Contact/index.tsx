@@ -4,16 +4,16 @@ import Header from '../../components/Header';
 
 import "./styles.css";
 
-const Support: React.FC = () => {
+const Contact: React.FC = () => {
   return (
     <>
       <Header />
 
-      <div className="support container">
-        Support
+      <div className="contact container">
+        Contact
       </div>
     </>
   )
 }
 
-export default Support;
+export default Contact;

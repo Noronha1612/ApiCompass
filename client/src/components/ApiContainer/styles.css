@@ -1,0 +1,75 @@
+.api-container {
+  width: 100%;
+  min-width: 620px;
+  min-height: 280px;
+
+  padding: 30px 80px;
+  margin: 50px 0;
+
+  border-radius: 15px;
+
+  background: #bfbfbf;
+}
+
+.api-container .title h1 {
+  padding: 8px 22px;
+  min-width: 280px;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  color: #353b48;
+
+  border: 1.3px solid #353b48;
+  border-radius: 8px;
+}
+
+.api-container .title h3 {
+  font-family: 'Ubuntu', sans-serif;
+  color: #353b48;
+
+  white-space: nowrap;
+
+  padding: 8px 22px;
+}
+
+.api-container .section {
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin: 9px 0;
+}
+
+.api-container .likesandviews {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.api-container .likesandviews div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 12px 0;
+}
+
+.api-container .likesandviews div span {
+  margin-left: 8px;
+}
+
+.api-container .section-2 p {
+  font-family: 'Roboto', sans-serif;
+  padding: 8px 22px;
+  width: 40;
+  margin-right: 25px;
+
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  color: #353b48;
+
+  border: 1.3px solid #353b48;
+  border-radius: 8px;
+}

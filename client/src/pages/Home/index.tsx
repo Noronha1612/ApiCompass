@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import {FiArrowLeft, FiArrowRight} from 'react-icons/fi';
 
 import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import ApiContainer from '../../components/ApiContainer';
+
 import Logo from '../../assets/logo.png';
 
 import api from '../../services/api';
@@ -14,6 +18,9 @@ interface ApiItem {
   mainUrl: string;
   documentationUrl: string | null;
   user_api_id: string;
+  views: number;
+  likes: number;
+  api_country: string;
 }
 
 const Home = () => {
@@ -53,8 +60,17 @@ const Home = () => {
     getAmountApis();
   }, []);
 
-  function handleChangePage(p: number) {
+  function handleChangePage(p: number ) {
     if (page !== p) setPage(p);
+  }
+
+  function handleChangePageByArrow(back: boolean) {
+    if ( back ) {
+      if ( amountPages.includes(page - 1) ) setPage(page - 1);
+    }
+    else {
+      if ( amountPages.includes(page + 1) ) setPage(page + 1);
+    }
   }
 
   return (
@@ -69,17 +85,34 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="search-filtered">
+      <section className="search-filtered-section">
 
-        {apiList.map(api => (
-          <div key={api.id}>API ID: {api.id}</div>
+        { apiList.map(api => (
+          <ApiContainer 
+            id={api.id}
+            name={api.apiName} 
+            description={api.description} 
+            mainUrl={api.mainUrl} 
+            documentationUrl={api.documentationUrl} 
+            user_id={ api.user_api_id }
+            views={ api.views }
+            likes={ api.likes }
+            api_country={ api.api_country }
+          />
         ))}
 
-        {amountPages.map(page => (
-          <button key={page} onClick={() => handleChangePage(page)}>{page}</button>
-        ))}
 
+      </section>
+
+      <div className="select-page">
+        <FiArrowLeft size={22} color="#353b48" style={{ cursor: "pointer" }} onClick={() => handleChangePageByArrow(true)} />
+        {amountPages.map(p => (
+          <button key={p} className={ p === page ? "selected" : "" } onClick={() => handleChangePage(p)}>{p}</button>
+        ))}
+        <FiArrowRight size={22} color="#353b48" style={{ cursor: "pointer" }} onClick={() => handleChangePageByArrow(false)} />
       </div>
+
+      <Footer />
     </>
   )
 }

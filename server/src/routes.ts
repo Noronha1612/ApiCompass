@@ -16,6 +16,7 @@ routes.get('/apis/list/length', Apis.indexLength);
 routes.post('/apis/create', celebrate({
   body: Joi.object().keys({
     apiName: Joi.string().required().error(new Error('The Api Name is a required field')),
+    api_country: Joi.string().required().error(new Error('The API Country is a required field')),
     description: Joi.string().required().error(new Error('The Description is a required field')),
     mainUrl: Joi.string().required().error(new Error('The Main URL is a required field')),
     documentationUrl: Joi.string(),

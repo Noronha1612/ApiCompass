@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+body {
+  background: #222f3e;
+}
+
 .container {
   margin-top: 80px;
 }

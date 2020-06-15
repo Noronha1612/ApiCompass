@@ -33,12 +33,14 @@ class apiController {
         apiName,
         description,
         mainUrl,
-        documentationUrl
+        documentationUrl,
+        api_country
       } = request.body;
 
 
       const api = await trx('apis').insert({
         apiName,
+        api_country,
         description,
         mainUrl,
         documentationUrl,

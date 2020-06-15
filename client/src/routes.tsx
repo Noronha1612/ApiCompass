@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Home from './pages/Home';
 import News from './pages/News';
-import Support from './pages/Support';
+import Contact from './pages/Contact';
 import Register_api from './pages/Register_api';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -16,7 +16,7 @@ const Routes = () => {
       <Switch>
         <Route path="/" exact component={ Home } />
         <Route path="/news" component={ News } />
-        <Route path="/support" component={ Support } />
+        <Route path="/contact" component={ Contact } />
         <Route path="/registerapi" component={ Register_api } />
         <Route path="/user/login" component={ Login } />
         <Route path="/user/register" component={ Register } />
