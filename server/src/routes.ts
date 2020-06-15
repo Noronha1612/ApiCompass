@@ -11,6 +11,8 @@ const Users = new userController();
 
 routes.get('/apis/list', Apis.index);
 
+routes.get('/apis/list/length', Apis.indexLength);
+
 routes.post('/apis/create', celebrate({
   body: Joi.object().keys({
     apiName: Joi.string().required().error(new Error('The Api Name is a required field')),

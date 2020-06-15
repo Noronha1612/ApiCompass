@@ -4,9 +4,17 @@ import knex from '../database/connection';
 
 class apiController {
   async index(request: Request, response: Response) {
-    const apis = await knex('apis').select('*');
+    const { page } = request.query;
+
+    const apis = await knex('apis').select('*').limit(10).offset((Number(page) - 1) * 10);
 
     return response.json(apis);
+  }
+
+  async indexLength(request: Request, response: Response) {
+    const api_ids = await knex('apis').select('id');
+
+    return response.json({ amount_apis: api_ids.length });
   }
 
   async create(request: Request, response: Response) {

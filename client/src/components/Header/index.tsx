@@ -7,7 +7,6 @@ import "./styles.css";
 
 import logoBranco from '../../assets/logo-branco.png';
 import logoPreto from '../../assets/logo-preto.png';
-import { emitKeypressEvents } from 'readline';
 
 interface DynamicStyle {
   minWidth: number
