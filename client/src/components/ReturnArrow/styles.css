@@ -1,0 +1,28 @@
+.arrow-container {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+
+  height: 30px;
+  width: 30px;
+
+  border: 1.5px solid #242933;
+  border-radius: 50%;
+  background: #7d818f34;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+  text-decoration: none;
+  transition: .4s;
+}
+
+.arrow-container:hover {
+  background: #cfd6e74f;
+}
+
+.arrow-container .icon {
+  color: #353b48;
+}

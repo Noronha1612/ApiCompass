@@ -3,3 +3,43 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.container {
+  margin-top: 80px;
+}
+
+.form-container {
+  background-color: #101435;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container .background-logo {
+  height: 75%;
+  filter: blur(4.8px);
+  opacity: .65;
+  user-select: none;
+}
+
+.status {
+  font-family: 'Ubuntu', sans-serif;
+  white-space: nowrap;
+
+  margin-bottom: 8px;
+}
+.statusgray {
+  color: #3b3b3b;
+}
+.statusred {
+  color: #c23616;
+}
+
+.wrong-input {
+  border: 2.2px solid #c23616;
+}

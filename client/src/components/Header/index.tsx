@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import { FiSearch, FiUser } from 'react-icons/fi';
 import { useHistory } from 'react-router-dom';
+import { verify } from 'jsonwebtoken';
 
 import "./styles.css";
 
 import logoBranco from '../../assets/logo-branco.png';
 import logoPreto from '../../assets/logo-preto.png';
+import { emitKeypressEvents } from 'readline';
 
 interface DynamicStyle {
   minWidth: number
+}
+
+interface UserData {
+  id: string;
+  name: string;
+  email: string;
+  api_ids: string[];
+  liked_apis: string[];
+  logged: boolean;
 }
 
 const Header = () => {
@@ -17,9 +28,31 @@ const Header = () => {
   const [ logoBack, setLogoBack ] = useState('#2f3640');
   const [ logoImg, setLogoImg ] = useState(<img src={logoBranco} alt="logo-branco"/>);
 
-  const [ dynamicStyle, setDynamicStyle ] = useState<DynamicStyle>({minWidth: 0})
+  const [ dynamicStyle, setDynamicStyle ] = useState<DynamicStyle>({minWidth: 0});
+
+  const [ searchItem, setSearchItem ] = useState('');
+
+  const [ userData, setUserData ] = useState<UserData>({
+    id: '',
+    name: '',
+    email: '',
+    api_ids: [],
+    liked_apis: [],
+    logged: false
+  });
 
   const [ searchBoxClassName, setSearchBoxClassName ] = useState('search-box-unselected');
+
+  useEffect(() => {
+    const token = localStorage.getItem('user_token');
+    const tokenKey = process.env.REACT_APP_TOKEN_SECRET_KEY;
+
+    if ( !token || !tokenKey ) return;
+
+    const userData = verify(token, tokenKey);
+
+    setUserData(userData as UserData);
+  }, []);
 
   function handleMouseIn(color: string, url: string) {
     setLogoBack(color);
@@ -32,6 +65,22 @@ const Header = () => {
       setDynamicStyle({minWidth: 250});
     }, 400);
   }
+
+  function handleClickProfile() {
+    if ( userData.logged ) {
+      history.push(`/user/profile/?user_id=${userData.id}`);
+    }
+    else {
+      history.push('/user/login');
+    }
+  }
+
+  function handleSearchSubmit(e: FormEvent) {
+    e.preventDefault();
+
+    history.push(`/search/?item=${searchItem}`);
+  }
+
   return (
     <div className="header-container">
       <div className="half" id="half1">
@@ -53,7 +102,11 @@ const Header = () => {
         >
           <FiSearch color="#b9c3d0" className="icon" size={20} />
 
-          { searchBoxClassName === 'search-box-selected' && <input id="input-search" type="text"/>}
+          { searchBoxClassName === 'search-box-selected' && (
+            <form action="" onSubmit={ handleSearchSubmit } >
+              <input id="input-search" type="text" onChange={e => { setSearchItem(e.target.value) }} />
+            </form>
+          )}
         </div>
       </div>
 
@@ -65,15 +118,25 @@ const Header = () => {
           >
             <div className="itemtext">News</div>
           </div>
-          <div className="item item2">
+          <div 
+            className="item item2"
+            onClick={() => { history.push('/support') }}
+          >
             <div className="itemtext">Support</div>
           </div>
-          <div className="item item3">
+          <div 
+            className="item item3"
+            onClick={() => { history.push('/registerapi') }}
+          >
             <div className="itemtext">Register API</div>
           </div>
         </section>
 
-        <div className="profile-button">
+        <div 
+          className={userData.logged? "profile-button-logged" : "profile-button"} 
+          onClick={handleClickProfile}
+        >
+          { userData.logged && <span className="username">{userData.name}</span> }
           <FiUser size={28} color='#b9c3d0' className="icon" />
         </div>
       </div>

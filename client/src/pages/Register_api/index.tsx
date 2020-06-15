@@ -4,16 +4,16 @@ import Header from '../../components/Header';
 
 import "./styles.css";
 
-const News: React.FC = () => {
+const Register_api: React.FC = () => {
   return (
     <>
       <Header />
 
-      <div className="news container">
-        News
+      <div className="register-api container">
+        Register API
       </div>
     </>
   )
 }
 
-export default News;
+export default Register_api;

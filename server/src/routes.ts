@@ -48,6 +48,13 @@ routes.post('/users/create', celebrate({
   }),
 }), Users.create);
 
+routes.post('/users/login', celebrate({
+  body: Joi.object({
+    email: Joi.string().required().error(new Error('The Email is a required field')),
+    password: Joi.string().required().error(new Error('The Password is a required field'))
+  })
+}), Users.login);
+
 routes.get('/users/list', Users.index);
 
 export default routes;

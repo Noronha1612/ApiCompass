@@ -1,0 +1,119 @@
+.register .register-container {
+  position: absolute;
+
+  height: 62%;
+  min-height: 560px;
+  width: 25%;
+  min-width: 320px;
+
+  padding: 18px 25px;
+  
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+
+  background: #bcbcbcc9;
+}
+
+.register .register-container img {
+  width: 90px;
+  user-select: none;
+}
+
+.register .register-container .go-to-login {
+  padding: 4px 10px;
+  margin-top: 28px;
+  margin-bottom: 15px;
+  text-align: center;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  color: #bcbcbc;
+
+  background: #000;
+  border-radius: 25px;
+
+  width: 20%;
+  min-width: 120px;
+
+  transition: .5s;
+}
+.register .register-container .go-to-login:hover {
+  color: #fff;
+}
+
+.register .register-container .status {
+  margin-bottom: 18px;
+}
+
+.register .register-container .name,
+.register .register-container .email {
+  width: 85%;
+}
+.register .register-container .input-box {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 85%;
+}
+.register .register-container .input-box input {
+  width: 47%;
+
+  font-size: 14px;
+}
+
+.register .register-container input {
+  padding: 8px 25px;
+  margin-bottom: 38px;
+  
+  border: none;
+  border-radius: 22px;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  color: #3b3b3b;
+
+  outline: none;
+  text-decoration: none;
+}
+
+.register .register-container .select-country {
+  width: 85%;
+
+  padding: 8px 25px;
+  margin-bottom: 38px;
+
+  border-radius: 22px;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  color: #3b3b3b;
+
+  outline: none;
+}
+
+.register .register-container button {
+  padding: 6px 12px;
+  text-align: center;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #bcbcbc;
+
+  background: #000;
+  border-radius: 25px;
+  border: none;
+
+  width: 45%;
+  min-width: 180px;
+
+  outline: none;
+  transition: .5s;
+  cursor: pointer;
+}
+.register .register-container button:hover {
+  color: #fff;
+}
