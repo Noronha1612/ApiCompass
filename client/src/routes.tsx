@@ -9,6 +9,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
 import Search from './pages/Search';
+import ForgotPasswordEmail from './pages/ForgotPassword/UserEmail';
+import ForgotPasswordCode from './pages/ForgotPassword/AuthCode';
 
 const Routes = () => {
   return (
@@ -22,6 +24,8 @@ const Routes = () => {
         <Route path="/user/register" component={ Register } />
         <Route path="/user/profile" component={ Profile } />
         <Route path="/search" component={ Search } />
+        <Route path="/user/forgotpassword" component={ ForgotPasswordEmail } />
+        <Route path="/user/confirmCode" component={ ForgotPasswordCode } />
       </Switch>
     </BrowserRouter>
   );

@@ -53,10 +53,10 @@ const Login: React.FC = () => {
 
         <img src={logo} alt="logo" className="background-logo"/>
 
-        <form action="/" onSubmit={handleSubmit} className="login-container">
+        <form action="/" onSubmit={handleSubmit} className="box-container">
           <img src={logoPreto} alt="logo-preto"/>
 
-          <Link to="/user/register" className="go-to-register">Register</Link>
+          <div className="title-section">Login</div>
 
           {status}
 
@@ -76,9 +76,10 @@ const Login: React.FC = () => {
             onChange={e => { setPassword( e.target.value ) }}
           />
 
-          <button type="submit">Login</button>
+          <button type="submit">Log-In</button>
 
-          <Link to="/user/forgetpassword" className="forget-pass-link">Did you forget your pass?</Link>
+          <Link to="/user/forgotpassword" className="forget-pass-link">Did you forget your pass?</Link>
+          <Link to="/user/register" className="register-link">Don't have an account? Please register.</Link>
         </form>
       </div>
     </>

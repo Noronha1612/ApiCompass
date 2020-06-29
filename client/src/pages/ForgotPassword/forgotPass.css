@@ -1,0 +1,10 @@
+.fp-container form,
+.cp-container form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 380px;
+  width: 85%;
+}

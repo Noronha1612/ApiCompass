@@ -6,13 +6,22 @@ class apiController {
   async index(request: Request, response: Response) {
     const { page } = request.query;
 
-    const apis = await knex('apis').select('*').limit(10).offset((Number(page) - 1) * 10);
+    const apis = await knex('apis')
+      .select('*')
+      .limit(10)
+      .offset((Number(page) - 1) * 10);
 
     return response.json(apis);
   }
 
   async indexLength(request: Request, response: Response) {
-    const api_ids = await knex('apis').select('id');
+    const { apiCountry } = request.query;
+
+    const api_country = apiCountry ? apiCountry : ""
+
+    const api_ids = await knex('apis')
+      .select('id')
+      .where('apiCountry', 'like', `%${api_country}%`);
 
     return response.json({ amount_apis: api_ids.length });
   }
@@ -34,13 +43,13 @@ class apiController {
         description,
         mainUrl,
         documentationUrl,
-        api_country
+        apiCountry,
       } = request.body;
 
 
       const api = await trx('apis').insert({
         apiName,
-        api_country,
+        apiCountry,
         description,
         mainUrl,
         documentationUrl,
@@ -79,15 +88,20 @@ class apiController {
   }
 
   async incrementViews(request: Request, response: Response) {
-    const { api_id } = request.headers;
+    try {
+      const { api_id } = request.headers;
 
-    const views = await knex('apis').where({ id: api_id }).select('views').first();
+      const views = await knex('apis').where({ id: api_id }).select('views').first();
 
-    await knex('apis').update({
-     views: Number(views.views) + 1
-    }).where({ id: api_id });
+      await knex('apis').update({
+      views: Number(views.views) + 1
+      }).where({ id: api_id });
 
-    return response.json({ api_id: api_id, views: views.views + 1 });
+      return response.json({ api_id: api_id, views: views.views + 1 });
+    }
+    catch (err) {
+      return response.json({error: 'API not found'});
+    }
   }
 
   async incrementLikes(request: Request, response: Response) {
@@ -96,6 +110,8 @@ class apiController {
     const trx = await knex.transaction();
 
     const liked_apis = await trx('users').select('liked_apis').where({ id: user_id }).first();
+
+    if ( !liked_apis ) return response.json({ message: 'User not found'})
 
     const previewLiked: string[] = liked_apis.liked_apis.split(',')
 

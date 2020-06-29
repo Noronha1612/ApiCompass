@@ -82,10 +82,10 @@ const Login: React.FC = () => {
 
         <img src={logo} alt="logo" className="background-logo"/>
 
-        <form action="/" onSubmit={handleSubmit} className="register-container">
+        <form action="/" onSubmit={handleSubmit} className="box-container">
           <img src={logoPreto} alt="logo-preto"/>
 
-          <Link to="/user/login" className="go-to-login">Log-In</Link>
+          <div className="title-section">Register</div>
 
           {status}
           
@@ -137,7 +137,10 @@ const Login: React.FC = () => {
           </select>
 
           <button type="submit">Register</button>
+
+          <Link to="/user/login" className="login-link" >Already have an account? Log-in.</Link>
         </form>
+
       </div>
     </>
   )

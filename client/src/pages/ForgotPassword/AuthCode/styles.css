@@ -1,0 +1,63 @@
+.cp-container h1 {
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+
+  margin: 30px 0 19px 0;
+}
+
+.cp-container form .code-input {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 40px;
+
+  max-width: 100%;
+}
+
+.cp-container form .code-input div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transform: skew(-29deg);
+
+  background: #bebebe;
+
+  width: 13%;
+
+  cursor: text;
+}
+
+.cp-container form .code-input div input {
+  max-width: 40%;
+  min-height: 60px;
+
+  font-size: 23px;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: bold;
+  color: #515151;
+
+  background: none;
+  border: none;
+
+  transform: skew(29deg);
+  outline: none;
+}
+
+.cp-container form button {
+  padding: 6px 24px;
+
+  background: #000;
+  border: none;
+  border-radius: 30px;
+
+  font-size: 16px;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: bold;
+  color: #bcbcbc;
+  
+  cursor: pointer;
+  outline: none;
+}

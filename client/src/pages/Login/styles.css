@@ -1,52 +1,4 @@
-.login .login-container {
-  position: absolute;
-
-  height: 62%;
-  min-height: 520px;
-  width: 25%;
-  min-width: 320px;
-
-  padding: 18px 25px;
-  
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-
-  background: #bcbcbcc9;
-}
-
-.login .login-container img {
-  width: 90px;
-  user-select: none;
-}
-
-.login .login-container .go-to-register {
-  padding: 4px 10px;
-  margin-top: 28px;
-  margin-bottom: 30px;
-  text-align: center;
-
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  text-decoration: none;
-  color: #bcbcbc;
-
-  background: #000;
-  border-radius: 25px;
-
-  width: 20%;
-  min-width: 120px;
-
-  transition: .5s;
-}
-
-.login .login-container .go-to-register:hover {
-  color: #fff;
-}
-
-.login .login-container input {
+.login .box-container input {
   border: none;
   border-radius: 22px;
   
@@ -63,7 +15,7 @@
   width: 85%;
 }
 
-.login .login-container button {
+.login .box-container button {
   padding: 6px 12px;
   margin-top: 28px;
   margin-bottom: 40px;
@@ -86,15 +38,26 @@
   cursor: pointer;
 }
 
-.login .login-container button:hover {
+.login .box-container button:hover {
   color: #fff;
 }
 
-.login .login-container .forget-pass-link {
+.login .box-container .forget-pass-link,
+.login .box-container .register-link {
   font-family: 'Ubuntu', sans-serif;
+  font-size: 13px;
   font-weight: bold;
   text-decoration: none;
   color: #000;
 
+  padding: 3px 9px;
+  margin: 9px 0px;
+
   white-space: nowrap;
+}
+
+.login .box-container .forget-pass-link:hover,
+.login .box-container .register-link:hover {
+  border-bottom: 1.2px solid #000;
+  margin: 8.4px;
 }

@@ -65,6 +65,16 @@ const Header = () => {
     }, 400);
   }
 
+  function handleBlurSearch() {
+    setSearchBoxClassName('search-box-unselected');
+    if (dynamicStyle.minWidth === 250) setDynamicStyle({minWidth: 0});
+    else {
+      setTimeout(() => {
+        setDynamicStyle({minWidth: 0});
+      }, 400);
+    }
+  }
+
   function handleClickProfile() {
     if ( userData.logged ) {
       history.push(`/user/profile/?user_id=${userData.id}`);
@@ -103,7 +113,7 @@ const Header = () => {
 
           { searchBoxClassName === 'search-box-selected' && (
             <form action="" onSubmit={ handleSearchSubmit } >
-              <input id="input-search" type="text" onChange={e => { setSearchItem(e.target.value) }} />
+              <input id="input-search" type="text" autoFocus onBlur={handleBlurSearch} onChange={e => { setSearchItem(e.target.value) }} />
             </form>
           )}
         </div>

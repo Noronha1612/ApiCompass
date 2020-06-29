@@ -105,13 +105,44 @@ class userController {
   }
 
   async index(request: Request, response: Response) {
-    const { user_id } = request.query;
+    const data = request.query.user_id ?
+      request.query.user_id : 
+      request.query.email;
 
-    const users = user_id ? 
-      await knex('users').select(['id', 'name', 'email', 'country', 'api_ids', 'liked_apis']).where({ id: user_id }).first() :
-      await knex('users').select(['id', 'name', 'email', 'country', 'api_ids', 'liked_apis']);
+    let users;
 
-    return response.json(users);
+    if ( String(data).includes('@') ) {
+      try {
+        users = data ? 
+          await knex('users').select(['id', 'name', 'email', 'country', 'api_ids', 'liked_apis']).where({ email: data }).first() :
+          await knex('users').select(['id', 'name', 'email', 'country', 'api_ids', 'liked_apis']);
+
+        if ( !users ) {
+          return response.json({ error: true, message: 'Email not found' });
+        }
+      }
+      catch (err) {
+        return response.json({ error: true, message: 'Error while trying search email' });
+      }
+      
+    }
+    else {
+      try {
+        users = data ? 
+          await knex('users').select(['id', 'name', 'email', 'country', 'api_ids', 'liked_apis']).where({ id: data }).first() :
+          await knex('users').select(['id', 'name', 'email', 'country', 'api_ids', 'liked_apis']);
+
+        if ( !users ) {
+          return response.json({ error: true, message: 'ID not found' });
+        }
+      }
+      catch (err) {
+        return response.json({ error: true, message: 'Error while trying search ID' });
+      }
+    }
+      
+
+    return response.json({error: false, data: users});
   }
 }
 
