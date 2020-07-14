@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { FiHeart, FiEye } from 'react-icons/fi';
-import axios from 'axios';
 
 import './styles.css';
 import api from '../../services/api';
@@ -9,8 +8,6 @@ interface ApiContainerProps {
   id: number;
   name: string;
   description: string;
-  mainUrl: string;
-  documentationUrl: string | null;
   user_id: string;
   views: number;
   likes: number;
@@ -22,8 +19,6 @@ const ApiContainer: React.FC<ApiContainerProps> = (props) => {
     id,
     name,
     description,
-    mainUrl,
-    documentationUrl,
     user_id,
     views,
     likes,
@@ -33,65 +28,68 @@ const ApiContainer: React.FC<ApiContainerProps> = (props) => {
   const [ creatorData, setCreatorData ] = useState<{name: string}>({name: ''});
 
   useEffect(() => {
-    const CancelToken = axios.CancelToken;
-    const source = CancelToken.source();
-
     async function getCreatorData() {
-      const response = await api.get<{error: boolean, data: {name: string} }>(`/users/list/?user_id=${user_id}`);
+      const response = await api.get<{name: string}>(`/users/getName/${user_id}`);
 
-      if ( response.data.error ) {
-        return;
-      }
-
-      setCreatorData(response.data.data);
+      setCreatorData(response.data);
     }
 
     getCreatorData();
-    return () => {
-      source.cancel();
-    }
   }, [ user_id ]);
 
   return (
     <section key={id} className="api-container">
-      <section className="section section-1">
+
+      <div className="first-section section" >
+
+        <div className="api-name">
+          <div className="title">
+            API Name:
+          </div>
+          <p>
+            { name }
+          </p>
+        </div>
+
+        <div className="creator-name">
+          <div className="title">
+            Creator's name:
+          </div>
+          <p>
+            { creatorData.name }
+          </p>
+        </div>
+
+      </div>
+
+      <div className="second-section section">
+        <div className="description">
+          { description.length > 115 ?
+          `${description.slice(0, 115)}...` :
+          description }
+        </div>
 
         <section>
-          <div className="title">
-            <h3>API Name</h3>
-            <h1 style={{ maxWidth: 24 * name.length }} >{name}</h1>
+          <div className="api-country">
+            <div className="title">Country: </div>
+            <p>
+              { api_country }
+            </p>
           </div>
 
-          <div className="title creator-name">
-            <h3>Creator's name</h3>
-            <h1>{creatorData.name}</h1>
-          </div>
-        </section>
-
-        <div className="views">
-          <FiEye color="#079992" size={20} />
-          <span>{views}</span>
-        </div>
-      </section>
-
-      <section className="section section-2">
-        <section>
-          <div className="title">
-            <h3>Description</h3>
-            <p>{description}</p>
-          </div>
-
-          <div className="title">
-            <h3>API Country</h3>
-            <h1>{api_country}</h1>
+          <div className="viewsAndLikes">
+            <span>
+              <FiHeart color='#d63031' size={23} />
+              { likes }
+            </span>
+            <span>
+              <FiEye color='#00b894' size={23} />
+              { views }
+            </span>
           </div>
         </section>
+      </div>
 
-        <div className="likes">
-          <FiHeart color="#e55039" size={20} />
-          <span>{likes}</span>
-        </div>
-      </section>
     </section>
   );
 }

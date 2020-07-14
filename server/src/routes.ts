@@ -11,7 +11,7 @@ const Users = new userController();
 
 routes.get('/apis/list', Apis.index);
 
-routes.get('/apis/list/length', Apis.indexLength);
+routes.get('/apis/list/getPages', Apis.getPages);
 
 routes.post('/apis/create', celebrate({
   body: Joi.object().keys({
@@ -59,5 +59,9 @@ routes.post('/users/login', celebrate({
 }), Users.login);
 
 routes.get('/users/list', Users.index);
+
+routes.get('/users/getName/:user_id', Users.getName);
+
+routes.delete('/users/delete/:user_id', Users.deleteUser);
 
 export default routes;

@@ -4,26 +4,96 @@ import knex from '../database/connection';
 
 class apiController {
   async index(request: Request, response: Response) {
-    const { page } = request.query;
+    const { page, country, likesType, viewsType, ageType } = request.query;
 
-    const apis = await knex('apis')
-      .select('*')
-      .limit(10)
-      .offset((Number(page) - 1) * 10);
+    if ( typeof likesType === 'object' || typeof viewsType === 'object' || typeof ageType === 'object' ) {
+      return;
+    }
+
+    let apis;
+
+    if ( country ) {
+      if ( likesType ) {
+        apis = await knex('apis')
+        .select('*')
+        .limit(10)
+        .offset((Number(page) - 1) * 10)
+        .orderBy('likes', likesType)
+        .where({ apiCountry: country });
+      }
+      else if ( viewsType ) {
+        apis = await knex('apis')
+        .select('*')
+        .limit(10)
+        .offset((Number(page) - 1) * 10)
+        .orderBy('views', viewsType)
+        .where({ apiCountry: country });
+      }
+      else {
+        apis = await knex('apis')
+        .select('*')
+        .limit(10)
+        .offset((Number(page) - 1) * 10)
+        .where({ apiCountry: country })
+        .orderBy('id', ageType);
+      }
+    }
+    else {
+      if ( likesType ) {
+        apis = await knex('apis')
+        .select('*')
+        .limit(10)
+        .offset((Number(page) - 1) * 10)
+        .orderBy('likes', likesType);
+      }
+      else if ( viewsType ) {
+        apis = await knex('apis')
+        .select('*')
+        .limit(10)
+        .offset((Number(page) - 1) * 10)
+        .orderBy('views', viewsType);
+      }
+      else {
+        apis = await knex('apis')
+        .select('*')
+        .limit(10)
+        .offset((Number(page) - 1) * 10)
+        .orderBy('id', ageType);
+      }
+    }
 
     return response.json(apis);
   }
 
-  async indexLength(request: Request, response: Response) {
-    const { apiCountry } = request.query;
+  async getPages(request: Request, response: Response) {
+    const { country } = request.query;
 
-    const api_country = apiCountry ? apiCountry : ""
+    let apis;
 
-    const api_ids = await knex('apis')
-      .select('id')
-      .where('apiCountry', 'like', `%${api_country}%`);
+    if ( country ) {
 
-    return response.json({ amount_apis: api_ids.length });
+      apis = await knex('apis')
+      .select('*')
+      .where({ apiCountry: country });
+
+    } else {
+
+      apis = await knex('apis')
+      .select('*');
+
+    }
+
+    const numberOfApis = apis.length;
+
+    const numberOfPages = Math.ceil(numberOfApis / 10);
+
+    const pages = [];
+
+    for( let i = 1; i <= numberOfPages; i++ ) {
+      pages.push(i);
+    }
+
+    return response.json({ pages });
   }
 
   async create(request: Request, response: Response) {
@@ -70,7 +140,7 @@ class apiController {
 
       await trx.commit();
 
-      return response.json({id: api[0], apiName, description, mainUrl, documentationUrl, user_id, views: 0, likes: 0});
+      return response.json({id: api[0], apiName, description, mainUrl, documentationUrl, user_id, views: 0, likes: 0, apiCountry});
     }
     catch (err) {
       console.log(err);

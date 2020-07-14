@@ -70,11 +70,72 @@
   transform: translateX(-50%);
 
   width: 70%;
-  min-width: 500px;
-  max-width: 1200px;
+  min-width: 670px;
+  max-width: 780px;
   padding: 40px 80px;
+  margin: 70px 0px;
 
-  border-radius: 18px;
+  border-radius: 8px;
   box-shadow: -8px 12px 20px rgba(0, 0, 0, .4);
-  background: #bcbcbc;
+  background: #bcbcbca2;
+}
+
+.main-homepage .select-page {
+  display: inline-flex;
+  align-items: center;
+
+  max-width: 500px;
+
+  text-align: center;
+
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.main-homepage .select-page button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 8px 12.2px;
+  margin: 0px 10px;
+
+  border: none;
+  background: #b3b3b3;
+  border-radius: 8px;
+
+  outline: none;
+  cursor: pointer;
+}
+
+.main-homepage .select-page .selected {
+  border: 1.2px solid #2c3e50;
+  background: #737373;
+
+  padding: 8px 11px;
+}
+
+.main-homepage .select-api .sortItems {
+  display: inline-flex;
+
+  width: 100%;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.main-homepage .select-api .sortType {
+  width: 150px;
+  margin: 0px 18px;
+  padding: 4px 6px;
+
+  font-size: 15px;
+  font-family: 'Roboto', sans-serif;
+
+  outline: none;
+  cursor: pointer;
+
+  border: none;
+  background-color: #f3f3f3;
 }

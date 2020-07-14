@@ -122,6 +122,8 @@ class userController {
         }
       }
       catch (err) {
+        console.log(err)
+
         return response.json({ error: true, message: 'Error while trying search email' });
       }
       
@@ -143,6 +145,33 @@ class userController {
       
 
     return response.json({error: false, data: users});
+  }
+
+  async getName(request: Request, response: Response) {
+    const { user_id } = request.params;
+
+    const dbresponse = await knex('users').select('name').where({ id: user_id }).first();
+
+    // expected { name: 'name' }
+    return response.json(dbresponse);
+  }
+
+  async deleteUser(request: Request, response: Response) {
+    try {
+      const { user_id } = request.params;
+
+      const foundOne = await knex('users').select('id').where({ id: user_id }).first();
+
+      if ( foundOne === undefined ) return response.json({ deleted: false, error: 'User not found' });
+
+      await knex('users').delete('*').where({ id: user_id });
+
+      return response.json({ deleted: true, user_id });
+    }
+    catch (err) {
+      console.log(err)
+      return response.json({ deleted: false, error: 'Something went wrong' });
+    }
   }
 }
 
