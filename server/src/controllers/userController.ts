@@ -74,8 +74,8 @@ class userController {
         id: data.id,
         name: data.name,
         email: data.email,
-        api_ids: data.api_ids.split(','),
-        liked_apis: data.liked_apis.split(','),
+        api_ids: data.api_ids,
+        liked_apis: data.liked_apis,
         logged: true,
       })
 

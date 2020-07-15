@@ -3,11 +3,13 @@ import { celebrate, Joi } from 'celebrate';
 
 import apiController from './controllers/apiController';
 import userController from './controllers/userController';
+import serviceController from './controllers/serviceController';
 
 const routes = Router();
 
 const Apis = new apiController();
 const Users = new userController();
+const Services = new serviceController();
 
 routes.get('/apis/list', Apis.index);
 
@@ -86,5 +88,11 @@ routes.get('/users/list', Users.index);
 routes.get('/users/getName/:user_id', Users.getName);
 
 routes.delete('/users/delete/:user_id', Users.deleteUser);
+
+routes.post('/services/generateToken', celebrate({
+  body: Joi.object({
+    payload: Joi.object().required()
+  })
+}),Services.generateToken);
 
 export default routes;

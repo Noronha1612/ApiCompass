@@ -1,5 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
+import jwt from 'jsonwebtoken';
 import axios from 'axios';
 
 import Header from '../../components/Header';
@@ -143,6 +144,22 @@ const Home = () => {
 
     getPages();
   }, [ country ]);
+  
+  useEffect(() => {
+    const jwtAuthCode = localStorage.getItem('jwtAuthToken');
+
+    const tokenSecretKey = process.env.REACT_APP_TOKEN_SECRET_KEY;
+
+    if (tokenSecretKey === undefined || jwtAuthCode === null) {
+      return;
+    }
+
+    const payload = jwt.verify(jwtAuthCode, tokenSecretKey) as { exp: number };
+
+    if ( payload.exp < Date.now() ) {
+      localStorage.removeItem('jwtAuthToken');
+    }
+  }, []);
 
   return (
     <>

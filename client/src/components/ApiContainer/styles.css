@@ -110,3 +110,7 @@
 
   color: #9cbcdc;
 }
+
+.api-container .second-section .viewsAndLikes .selected {
+  background: #d63031;
+}
