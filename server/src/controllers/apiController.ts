@@ -207,6 +207,42 @@ class apiController {
 
     return response.json({ api_id: api_id, likes: likes.likes + 1, user_likes: newestLiked });
   }
+
+  async decrementLikes(request: Request, response: Response) {
+    const { api_id, user_id } = request.headers as { api_id: string, user_id: string };
+
+    const trx = await knex.transaction();
+
+    const dbUserLikesResponse = await trx('users')
+      .select('liked_apis')
+      .where({ id: user_id })
+      .first();
+
+    if ( !dbUserLikesResponse ) return response.status(400).json({ error: true, statusCode: 400, message: 'User not found' });
+
+    const userLikedApis: string[] = dbUserLikesResponse.liked_apis.split(',');
+
+    if ( !userLikedApis.includes(api_id) ) return response.status(405).json({ error: true, statusCode: 405, message: 'User has not liked this api' });
+
+    const newUserLikedApis = userLikedApis.filter( liked_api_id => liked_api_id !== String(api_id) );
+
+    const { likes: previewLikes } = await trx('apis')
+      .select('likes')
+      .where({ id: api_id })
+      .first() as { likes: number };
+
+    await trx('apis')
+      .update({ likes: previewLikes - 1 })
+      .where({ id: api_id });
+
+    await trx('users')
+      .update({ liked_apis: newUserLikedApis.join(',') })
+      .where({ id: user_id });
+
+    trx.commit();
+
+    return response.status(200).json({ error: false, api_id, user_id });
+  }
 }
 
 export default apiController;

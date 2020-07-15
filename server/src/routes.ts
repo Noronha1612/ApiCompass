@@ -39,6 +39,13 @@ routes.put('/apis/incrementLikes', celebrate({
   }).options({ allowUnknown: true })
 }), Apis.incrementLikes);
 
+routes.put('/apis/decrementLikes', celebrate({
+  headers: Joi.object({
+    api_id: Joi.string().required().error(new Error('Api ID not found on request header')),
+    user_id: Joi.string().required().error(new Error('User ID not found on request header'))
+  }).options({ allowUnknown: true })
+}), Apis.decrementLikes);
+
 routes.delete('/apis/delete/:api_id', Apis.delete);
 
 routes.post('/users/create', celebrate({
