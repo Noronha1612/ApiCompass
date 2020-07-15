@@ -58,6 +58,22 @@ routes.post('/users/login', celebrate({
   })
 }), Users.login);
 
+routes.post('/users/sendMail', celebrate({
+  query: Joi.object({
+    userEmail: Joi.string().required().error(new Error('The userEmail is a required field'))
+  }).options({ allowUnknown: true })
+}), Users.sendMail);
+
+routes.put('/users/changePassword', celebrate({
+  body: Joi.object({
+    newPassword: Joi.string().required().error(new Error('The New Password is required')),
+    confNewPassword: Joi.string().required().error(new Error('The Confirm Password is required'))
+  }),
+  headers: Joi.object({
+    user_email: Joi.string().required().error(new Error('Internal server error')),
+  }).options({ allowUnknown: true })
+}), Users.changePassword);
+
 routes.get('/users/list', Users.index);
 
 routes.get('/users/getName/:user_id', Users.getName);

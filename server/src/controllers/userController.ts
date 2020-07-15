@@ -1,9 +1,13 @@
 import { Request, Response } from 'express';
 import crypto from 'crypto';
-import knex from '../database/connection';
-import generateToken from '../utils/generateJWT';
-import { config } from 'dotenv';
 
+import knex from '../database/connection';
+
+import generateToken from '../utils/generateJWT';
+
+import sendMail from '../services/sendMail';
+
+import { config } from 'dotenv';
 config();
 
 class userController {
@@ -14,8 +18,14 @@ class userController {
         email,
         password,
         confirmPassword,
-        country,
-      } = request.body;
+        country
+      } = request.body as {
+        name: string,
+        email: string,
+        password: string,
+        confirmPassword: string,
+        country: string
+      };
 
       const responseData = await knex('users').select(['email', 'name']);
 
@@ -31,7 +41,11 @@ class userController {
       }
 
       if ( password !== confirmPassword ) {
-        return response.json({ logged: false, message: "The passwords don't matches", field: 'password' });
+        return response.json({ logged: false, message: "The passwords don't match", field: 'password' });
+      }
+
+      if ( password.length < 6 ) {
+        return response.json({ logged: false, message: "The password is to short", field: 'password' });
       }
 
       const passKey = process.env["PASS_ENCRYPT_KEY"];
@@ -104,6 +118,30 @@ class userController {
     return response.json({ logged: true, jwToken: token });
   }
 
+  async sendMail(request: Request, response: Response) {
+    const { userEmail } = request.query;
+
+    if ( !userEmail || typeof userEmail === 'object' ) {
+      return;
+    }
+
+    const authCode = sendMail({ userEmail });
+
+    const passKey = process.env['PASS_ENCRYPT_KEY'];
+
+    if ( passKey === undefined ) {
+      return response.send('passKey undefined') ;
+    }
+
+    const cipher = crypto.createCipher('aes-256-gcm', passKey);
+
+    const encryptedAuthCode = cipher.update(authCode, 'utf8', 'hex');
+    
+    const jwToken = generateToken({ userEmail, exp: Date.now() + 3600000, authCode: encryptedAuthCode});
+
+    return response.json({ jwToken });
+  }
+
   async index(request: Request, response: Response) {
     const data = request.query.user_id ?
       request.query.user_id : 
@@ -172,6 +210,42 @@ class userController {
       console.log(err)
       return response.json({ deleted: false, error: 'Something went wrong' });
     }
+  }
+
+  async changePassword(request: Request, response: Response) {
+    const { user_email } = request.headers as { user_email: string };
+
+    const { newPassword, confNewPassword } = request.body as { newPassword: string, confNewPassword: string };
+
+    const { password: previewPassword } = await knex('users').select('password').where({ email: user_email }).first() as { password: string };
+
+    if ( newPassword !== confNewPassword ) {
+      return response.status(400).json({ logged: false, error: false, message: "The passwords don't match", statusCode: 400 });
+    }
+
+    if ( newPassword.length < 6 ) {
+      return response.status(400).json({ logged: false, error: false, message: "The password is too short", statusCode: 400 });
+    }
+
+    const passEncryptKey = process.env.PASS_ENCRYPT_KEY;
+
+    if ( passEncryptKey === undefined ) {
+      return response.status(500).json({ logged: false, error: true, message: 'Pass Encrypt Key is undefined', statusCode: 500 });
+    }
+
+    const cipher = crypto.createCipher('aes-256-gcm', passEncryptKey);
+
+    const encryptedPass = cipher.update(newPassword, 'utf8', 'hex');
+
+    if ( previewPassword === encryptedPass ) {
+      return response.status(400).json({ logged: false, error: false, message: "The password is equal to the previous one", statusCode: 400 });
+    }
+
+    await knex('users').update({
+      password: encryptedPass
+    }).where({ email: user_email });
+
+    return response.status(200).json({ logged: true, error: false, user_email, statusCode: 200 });
   }
 }
 

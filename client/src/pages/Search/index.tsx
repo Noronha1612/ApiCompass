@@ -13,8 +13,6 @@ interface SearchProps {
 const Search: React.FC<SearchProps> = ({ location }) => {
   const values = queryString.parse(location.search);
 
-  console.log(values)
-
   return (
     <>
       <div>Search</div>

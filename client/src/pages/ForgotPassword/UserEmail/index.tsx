@@ -1,6 +1,7 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import api from '../../../services/api';
+import jwt from 'jsonwebtoken';
 
 import ReturnArrow from '../../../components/ReturnArrow';
 
@@ -26,10 +27,31 @@ const ForgotPassword = () => {
       return;
     }
 
-    // Code HERE
+    const response = await api.post<{ jwToken: string }>(`users/sendMail?userEmail=${email}`);
+
+    localStorage.setItem('jwtAuthToken', response.data.jwToken);
 
     history.push('/user/confirmCode');
   }
+
+  useEffect(() => {
+    const jwtAuthCode = localStorage.getItem('jwtAuthToken');
+
+    const tokenSecretKey = process.env.REACT_APP_TOKEN_SECRET_KEY;
+
+    if (tokenSecretKey === undefined || jwtAuthCode === null) {
+      return;
+    }
+
+    const payload = jwt.verify(jwtAuthCode, tokenSecretKey) as { userEmail: string, exp: number };
+
+    if ( payload.exp < Date.now() ) {
+      localStorage.removeItem('jwtAuthToken');
+    }
+    else {
+      history.push('/user/confirmCode');
+    }
+  }, [ history ]);
 
   return (
     <>
@@ -40,7 +62,7 @@ const ForgotPassword = () => {
 
         <div className="fp-container box-container">
           <h1>Enter your email</h1>
-          <h6>An email will be sent with a code to reset your password</h6>
+          <h6 style={{ fontFamily: 'Roboto, sans-serif' }}>An email will be sent with a code to reset your password</h6>
 
           <form action="" onSubmit={handleEnterEmail} >
             {status}

@@ -13,8 +13,6 @@ interface ProfileProps {
 const Profile: React.FC<ProfileProps> = ({ location }) => {
   const values = queryString.parse(location.search);
 
-  console.log(values)
-
   return (
     <>
       <div>Profile</div>

@@ -1,5 +1,8 @@
-import React, { FormEvent, ChangeEvent, useState, Dispatch } from 'react';
-
+import React, { FormEvent, ChangeEvent, useState, useEffect } from 'react';
+import jwt from 'jsonwebtoken';
+import { useHistory } from 'react-router-dom';
+import { createDecipher } from 'crypto';
+ 
 import './styles.css';
 import '../forgotPass.css';
 
@@ -9,6 +12,8 @@ import logo from '../../../assets/logo.png';
 import logoPreto from '../../../assets/logo-preto.png';
 
 const AuthCode = () => {
+  const history = useHistory();
+
   const [ item1, setItem1 ] = useState('');
   const [ item2, setItem2 ] = useState('');
   const [ item3, setItem3 ] = useState('');
@@ -19,12 +24,54 @@ const AuthCode = () => {
   const [ status, setStatus ] = useState(<h1 className="statusgray" >Enter the code</h1>)
 
   function handleConfirmCode(e: FormEvent) {
+    function handleCodeExpiration() {
+      history.push('/user/forgotPassword');
+    }
+
     e.preventDefault();
 
     const code = item1.concat(item2, item3, item4, item5, item6);
 
     if (code.length !== 6) {
       setStatus(<h1 className="statusred">Enter a valid code</h1>);
+    }
+
+    const jwtAuth = localStorage.getItem('jwtAuthToken');
+
+    const tokenSecretKey = process.env.REACT_APP_TOKEN_SECRET_KEY;
+
+    if ( tokenSecretKey === undefined ) {
+      return;
+    }
+
+    if ( jwtAuth === null ) {
+      handleCodeExpiration();
+      return;
+    }
+
+    const payload = jwt.verify(jwtAuth, tokenSecretKey) as { userEmail: string, authCode: string, exp: number };
+
+    if ( payload.exp < Date.now() ) {
+      handleCodeExpiration();
+      return;
+    }
+
+    const decipherKey = process.env.REACT_APP_DECIPHER_KEY;
+
+    if ( decipherKey === undefined ) {
+      return;
+    }
+    
+    const decipher = createDecipher('aes-256-gcm', decipherKey);
+
+    const authCode = decipher.update(payload.authCode, 'hex', 'utf8');
+
+    if ( authCode === code ) {
+      history.push('/user/changePassword');
+    }
+    else {
+      console.log(authCode)
+      setStatus(<h1 className="statusred">Code doesn't match</h1>);
     }
   }
 
@@ -39,6 +86,24 @@ const AuthCode = () => {
     }
   }
 
+  useEffect(() => {
+    const jwtAuthCode = localStorage.getItem('jwtAuthToken');
+
+    const tokenSecretKey = process.env.REACT_APP_TOKEN_SECRET_KEY;
+
+    if (tokenSecretKey === undefined || jwtAuthCode === null) {
+      history.push('/user/forgotPassword');
+      return;
+    }
+
+    const payload = jwt.verify(jwtAuthCode, tokenSecretKey) as { userEmail: string, exp: number };
+
+    if ( payload.exp < Date.now() ) {
+      localStorage.removeItem('jwtAuthToken');
+      history.push('/user/forgotPassword');
+    }
+  }, [ history ]);
+
   return (
     <>
       <div className="form-container">
@@ -52,6 +117,8 @@ const AuthCode = () => {
           <form action="" onSubmit={ handleConfirmCode } >
 
             {status}
+
+            <h6>The code will expire in 1 hour</h6>
 
             <div className="code-input">
               <div>
