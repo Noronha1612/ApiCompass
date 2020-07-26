@@ -2,6 +2,10 @@ import React, { FormEvent, ChangeEvent, useState, useEffect } from 'react';
 import jwt from 'jsonwebtoken';
 import { useHistory } from 'react-router-dom';
 import { createDecipher } from 'crypto';
+
+import useCheckLogged from '../../../utils/checkLogged';
+
+import api from '../../../services/api';
  
 import './styles.css';
 import '../forgotPass.css';
@@ -21,14 +25,16 @@ const AuthCode = () => {
   const [ item5, setItem5 ] = useState('');
   const [ item6, setItem6 ] = useState('');
 
-  const [ status, setStatus ] = useState(<h1 className="statusgray" >Enter the code</h1>)
+  const [ status, setStatus ] = useState(<h1 className="statusgray" >Enter the code</h1>);
 
-  function handleConfirmCode(e: FormEvent) {
+  const [ resendEmailDelay, setResendEmailDelay ] = useState(60);
+
+  function handleConfirmCode(e: FormEvent | null) {
     function handleCodeExpiration() {
       history.push('/user/forgotPassword');
     }
 
-    e.preventDefault();
+    if (e) e.preventDefault();
 
     const code = item1.concat(item2, item3, item4, item5, item6);
 
@@ -70,12 +76,11 @@ const AuthCode = () => {
       history.push('/user/changePassword');
     }
     else {
-      console.log(authCode)
       setStatus(<h1 className="statusred">Code doesn't match</h1>);
     }
   }
 
-  function handleChangeInput(e: ChangeEvent<HTMLInputElement>, setItem: React.Dispatch<React.SetStateAction<string>>) {
+  function handleChangeInput(e: ChangeEvent<HTMLInputElement>, setItem: React.Dispatch<React.SetStateAction<string>>, id:number) {
     const item = e.target.value;
 
     if ( !isNaN(Number(item)) && item !== ' ' ) {
@@ -83,6 +88,30 @@ const AuthCode = () => {
     }
     else {
       setItem('');
+    }
+
+    if ( id !== 6 && !!item ) {
+      document.getElementById(`btn${id + 1}`)?.focus();
+    }
+  }
+
+  function handleResendEmail() {
+    const token = localStorage.getItem('jwtAuthToken');
+
+    if ( !token ) {
+        history.push('/user/forgotPassword');
+        return;
+    }
+
+    try {
+        api.post('/services/resendEmail', { lsToken: token });
+
+        setResendEmailDelay(60);
+    }
+    catch(err) {
+        const { message } = err.response.data;
+
+        setStatus(<h1 className="statusred" style={{ fontSize: 13 }}>{message}</h1>);
     }
   }
 
@@ -104,6 +133,16 @@ const AuthCode = () => {
     }
   }, [ history ]);
 
+  useEffect(() => {
+    const interval = setInterval(() => setResendEmailDelay(resendEmailDelay => resendEmailDelay - 1), 1000);
+
+    if ( resendEmailDelay === 0 ) clearInterval(interval);
+
+    return () => clearInterval(interval)
+  }, [ resendEmailDelay ]);
+
+  useCheckLogged([]);
+
   return (
     <>
       <div className="form-container">
@@ -122,26 +161,31 @@ const AuthCode = () => {
 
             <div className="code-input">
               <div>
-                <input type="text" value={item1} onChange={e => handleChangeInput(e, setItem1)} maxLength={1} />
+                <input id="btn1" type="text" value={item1} onChange={e => handleChangeInput(e, setItem1, 1)} maxLength={1} />
               </div>
               <div>
-                <input type="text" value={item2} onChange={e => handleChangeInput(e, setItem2)} maxLength={1} />
+                <input id="btn2" type="text" value={item2} onChange={e => handleChangeInput(e, setItem2, 2)} maxLength={1} />
               </div>
               <div>
-                <input type="text" value={item3} onChange={e => handleChangeInput(e, setItem3)} maxLength={1} />
+                <input id="btn3" type="text" value={item3} onChange={e => handleChangeInput(e, setItem3, 3)} maxLength={1} />
               </div>
               <div>
-                <input type="text" value={item4} onChange={e => handleChangeInput(e, setItem4)} maxLength={1} />
+                <input id="btn4" type="text" value={item4} onChange={e => handleChangeInput(e, setItem4, 4)} maxLength={1} />
               </div>
               <div>
-                <input type="text" value={item5} onChange={e => handleChangeInput(e, setItem5)} maxLength={1} />
+                <input id="btn5" type="text" value={item5} onChange={e => handleChangeInput(e, setItem5, 5)} maxLength={1} />
               </div>
               <div>
-                <input type="text" value={item6} onChange={e => handleChangeInput(e, setItem6)} maxLength={1} />
+                <input id="btn6" type="text" value={item6} onChange={e => handleChangeInput(e, setItem6, 6)} maxLength={1} />
               </div>
             </div>
 
             <button type="submit" >Verify</button>
+            <div 
+              className="clickableDiv" 
+              style={resendEmailDelay === 0? {} : {pointerEvents: 'none', opacity: .6}} 
+              onClick={resendEmailDelay === 0? handleResendEmail : () => {}} 
+            >Resend email {!!resendEmailDelay && resendEmailDelay}</div>
           </form>
 
           <img src={logoPreto} alt="logo-preto"/>

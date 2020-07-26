@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
 import { MdFavoriteBorder, MdFavorite } from 'react-icons/md';
 import jwt from 'jsonwebtoken';
@@ -20,6 +21,8 @@ interface ApiContainerProps {
 }
 
 const ApiContainer: React.FC<ApiContainerProps> = (props) => {
+  const history = useHistory();
+
   const {
     id,
     name,
@@ -54,25 +57,38 @@ const ApiContainer: React.FC<ApiContainerProps> = (props) => {
       updateData();
     }
     else {
-
+      history.push('/user/login');
     }
   }
 
   async function handleLike(logged: boolean) {
-    const loggedUserToken = localStorage.getItem('user_token') as string;
+    if ( logged ) {
+      const loggedUserToken = localStorage.getItem('user_token') as string;
 
-    const tokenKey = process.env.REACT_APP_TOKEN_SECRET_KEY as string;
+      const tokenKey = process.env.REACT_APP_TOKEN_SECRET_KEY as string;
 
-    const { id: user_id } = jwt.verify( loggedUserToken, tokenKey ) as { id: string };
+      const { id: user_id } = jwt.verify( loggedUserToken, tokenKey ) as { id: string };
 
-    await api.put('/apis/incrementLikes', null, { headers: {
-      user_id,
-      api_id: id
-    }});
+      await api.put('/apis/incrementLikes', null, { headers: {
+        user_id,
+        api_id: id
+      }});
 
-    setCurrentLikes(currentLikes + 1);
-    setIsApiLiked(true);
-    updateData();
+      setCurrentLikes(currentLikes + 1);
+      setIsApiLiked(true);
+      updateData();
+    }
+    else {
+      history.push('/user/login');
+    }
+  }
+
+  function handleClickApiName() {
+
+  }
+
+  function handleClickCreatorName() {
+
   }
 
   useEffect(() => {
@@ -94,21 +110,23 @@ const ApiContainer: React.FC<ApiContainerProps> = (props) => {
 
     const payload = jwt.verify( loggedUserToken, tokenKey ) as { liked_apis: string };
 
-    const likedApis = payload.liked_apis.split(',');
+    const likedApis = typeof payload.liked_apis === 'string' ?
+      payload.liked_apis.split(',') :
+      payload.liked_apis;
 
     if ( !likedApis.includes(String(id)) ) {
       return;
     }
 
     setIsApiLiked(true);
-  }, []);
+  }, [ id ]);
 
   return (
     <section key={id} className="api-container">
 
       <div className="first-section section" >
 
-        <div className="api-name">
+        <div className="api-name clickable" onClick={ handleClickApiName }>
           <div className="title">
             API Name:
           </div>
@@ -117,7 +135,7 @@ const ApiContainer: React.FC<ApiContainerProps> = (props) => {
           </p>
         </div>
 
-        <div className="creator-name">
+        <div className="creator-name clickable" onClick={ handleClickCreatorName }>
           <div className="title">
             Creator's name:
           </div>

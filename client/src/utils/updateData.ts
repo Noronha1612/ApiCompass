@@ -4,14 +4,14 @@ import api from '../services/api';
 
 interface UpdatedUserData {
     error: boolean;
-    data: {
+    data?: {
         id: string;
         name: string;
         email: string;
         api_ids: string;
         liked_apis: string;
-    } | null;
-    message: string | null
+    };
+    message?: string
 }
 
 export default async function updateData() {
@@ -28,6 +28,7 @@ export default async function updateData() {
     const { data: updatedUserData } = await api.get<UpdatedUserData>(`/users/list?user_id=${payload.id}`);
 
     if ( updatedUserData.error || !updatedUserData.data ) {
+        localStorage.removeItem('user_token');
         return;
     }
 

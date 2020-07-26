@@ -1,6 +1,8 @@
 import React, { FormEvent, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
+import useCheckLogged from '../../utils/checkLogged';
+
 import api from '../../services/api';
 
 import logo from '../../assets/logo.png';
@@ -44,6 +46,8 @@ const Login: React.FC = () => {
 
     history.push('/');
   }
+
+  useCheckLogged([]);
 
   return (
     <>

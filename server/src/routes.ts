@@ -15,6 +15,8 @@ routes.get('/apis/list', Apis.index);
 
 routes.get('/apis/list/getPages', Apis.getPages);
 
+routes.get('/apis/list/ids', Apis.indexByIds);
+
 routes.post('/apis/create', celebrate({
   body: Joi.object().keys({
     apiName: Joi.string().required().error(new Error('The Api Name is a required field')),
@@ -83,6 +85,20 @@ routes.put('/users/changePassword', celebrate({
   }).options({ allowUnknown: true })
 }), Users.changePassword);
 
+routes.put('/users/follow', celebrate({
+  headers: Joi.object({
+    followed_id: Joi.string().required().error(new Error('The Followed ID is required')),
+    user_id: Joi.string().required().error(new Error('The User ID is required'))
+  }).options({ allowUnknown: true })
+}), Users.follow);
+
+routes.put('/users/unfollow', celebrate({
+  headers: Joi.object({
+    followed_id: Joi.string().required().error(new Error('The Followed ID is required')),
+    user_id: Joi.string().required().error(new Error('The User ID is required'))
+  }).options({ allowUnknown: true })
+}), Users.unfollow);
+
 routes.get('/users/list', Users.index);
 
 routes.get('/users/getName/:user_id', Users.getName);
@@ -93,6 +109,12 @@ routes.post('/services/generateToken', celebrate({
   body: Joi.object({
     payload: Joi.object().required()
   })
-}),Services.generateToken);
+}), Services.generateToken);
+
+routes.post('/services/resendEmail', celebrate({
+  body: Joi.object({
+    lsToken: Joi.string().required().error(new Error('Not found any token on local storage'))
+  })
+}), Services.resendEmail);
 
 export default routes;

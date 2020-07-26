@@ -65,6 +65,35 @@ class apiController {
     return response.json(apis);
   }
 
+  async indexByIds(request: Request, response: Response) {
+    const { api_ids } = request.headers;
+
+    if ( typeof api_ids !== 'string' ) {
+      return response.status(400).json({ error: 'Bad Request from typeof api_ids' });
+    }
+
+    const apiIdsArray = api_ids.split(',').map(e => parseInt(e));
+
+    if ( api_ids.length !== (apiIdsArray.length * 2) - 1) {
+      return response.status(406).json({ error: 'Bad format from api_ids', api_ids })
+    }
+
+    const apisPromisse = apiIdsArray.map(async api_id => {
+      const api = await knex('apis')
+        .select('*')
+        .where({ id: api_id })
+        .first();
+
+      return api;
+    });
+
+    const apis = await Promise.all(apisPromisse);
+
+    const cleanApis = apis.filter(e => !!e);
+
+    return response.status(200).json({ error: false, data: cleanApis });
+  }
+
   async getPages(request: Request, response: Response) {
     const { country } = request.query;
 
@@ -132,7 +161,7 @@ class apiController {
 
       const apiIdsArray = apiIds[0].api_ids.split(',').filter( (id: string) => !!id );
 
-      const user = await trx('users')
+      await trx('users')
         .update({
           api_ids: [...apiIdsArray, api[0]].join(',')
         })
@@ -159,17 +188,27 @@ class apiController {
 
   async incrementViews(request: Request, response: Response) {
     try {
+      const trx = await knex.transaction();
+
       const { api_id } = request.headers;
 
-      const views = await knex('apis').where({ id: api_id }).select('views').first();
+      const apiData = await trx('apis').where({ id: api_id }).select(['views', 'user_api_id']).first<{ views: number, user_api_id: string }>();
 
-      await knex('apis').update({
-      views: Number(views.views) + 1
+      const { score } = await trx('users').where({ id: apiData.user_api_id }).select('score').first<{ score: number }>();
+
+      await trx('apis').update({
+      views: Number(apiData.views) + 1
       }).where({ id: api_id });
 
-      return response.json({ api_id: api_id, views: views.views + 1 });
+      await trx('users').where({ id: apiData.user_api_id }).update({ score: score + 1 });
+
+      await trx.commit();
+
+      return response.json({ api_id: api_id, views: apiData.views + 1 });
     }
     catch (err) {
+      console.log(err);
+
       return response.json({error: 'API not found'});
     }
   }
@@ -179,11 +218,11 @@ class apiController {
 
     const trx = await knex.transaction();
 
-    const liked_apis = await trx('users').select('liked_apis').where({ id: user_id }).first();
+    const userData = await trx('users').select(['liked_apis', 'score']).where({ id: user_id }).first<{ liked_apis: string, score: number }>();
 
-    if ( !liked_apis ) return response.json({ message: 'User not found'})
+    if ( !userData ) return response.json({ message: 'User not found'})
 
-    const previewLiked: string[] = liked_apis.liked_apis.split(',')
+    const previewLiked: string[] = userData.liked_apis.split(',')
 
     if ( previewLiked.includes(String(api_id)) ) {
       return response.json({ message: 'User has already liked this api' })
@@ -197,15 +236,18 @@ class apiController {
       liked_apis: newestLiked
     });
 
-    const likes = await trx('apis').where({ id: api_id }).select('likes').first();
+    const apiData = await trx('apis').where({ id: api_id }).select(['likes', 'user_api_id']).first<{ likes: number, user_api_id: string }>();
 
     await trx('apis').update({
-     likes: Number(likes.likes) + 1
+     likes: Number(apiData.likes) + 1
     }).where({ id: api_id });
+
+    await trx('users').where({ id: apiData.user_api_id })
+      .update({ score: userData.score + 3 });
 
     await trx.commit();
 
-    return response.json({ api_id: api_id, likes: likes.likes + 1, user_likes: newestLiked });
+    return response.json({ api_id: api_id, likes: apiData.likes + 1, user_likes: newestLiked });
   }
 
   async decrementLikes(request: Request, response: Response) {
@@ -213,23 +255,23 @@ class apiController {
 
     const trx = await knex.transaction();
 
-    const dbUserLikesResponse = await trx('users')
-      .select('liked_apis')
+    const userData = await trx('users')
+      .select(['liked_apis', 'score'])
       .where({ id: user_id })
-      .first();
+      .first<{ liked_apis: string, score: number }>();
 
-    if ( !dbUserLikesResponse ) return response.status(400).json({ error: true, statusCode: 400, message: 'User not found' });
+    if ( !userData ) return response.status(400).json({ error: true, statusCode: 400, message: 'User not found' });
 
-    const userLikedApis: string[] = dbUserLikesResponse.liked_apis.split(',');
+    const userLikedApis: string[] = userData.liked_apis.split(',');
 
     if ( !userLikedApis.includes(api_id) ) return response.status(405).json({ error: true, statusCode: 405, message: 'User has not liked this api' });
 
     const newUserLikedApis = userLikedApis.filter( liked_api_id => liked_api_id !== String(api_id) );
 
-    const { likes: previewLikes } = await trx('apis')
-      .select('likes')
+    const { likes: previewLikes, user_api_id } = await trx('apis')
+      .select(['likes', 'user_api_id'])
       .where({ id: api_id })
-      .first() as { likes: number };
+      .first<{ likes: number, user_api_id: string }>();
 
     await trx('apis')
       .update({ likes: previewLikes - 1 })
@@ -238,6 +280,10 @@ class apiController {
     await trx('users')
       .update({ liked_apis: newUserLikedApis.join(',') })
       .where({ id: user_id });
+
+    await trx('users')
+      .update({ score: userData.score - 3 })
+      .where({ id: user_api_id });
 
     trx.commit();
 

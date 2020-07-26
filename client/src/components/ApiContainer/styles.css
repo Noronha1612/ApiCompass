@@ -114,3 +114,15 @@
 .api-container .second-section .viewsAndLikes .selected {
   background: #d63031;
 }
+
+.api-container .clickable {
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition: .4s;
+}
+
+.api-container .clickable:hover {
+  background: #1a4166;
+}

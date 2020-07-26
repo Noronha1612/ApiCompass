@@ -1,5 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
+import { FaPaypal } from 'react-icons/fa';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
 
@@ -35,14 +36,26 @@ interface Countries {
 }
 
 const SelectPage: React.FC<SelectPageProps> = ({ page, amountPages, handleChangePage }) => {
+  function getPagesArray(amountPages: number[], page: number) {
+    if ( page === 1 || page === 2 ) return amountPages.slice(0, 5);
+    else if ( page === amountPages.length || page === amountPages.length - 1 ) return amountPages.slice(amountPages.length - 5, amountPages.length);
+    else return amountPages.slice( page - 3, page + 2 )
+  }
+
+  const pagesArray = getPagesArray(amountPages, page);
+
   return (
-    <div className="select-page">
-      <FiArrowLeft size={22} color="#353b48" style={{ cursor: "pointer" }} onClick={() => handleChangePage(page - 1)} />
-      {amountPages.map(p => (
-        <button key={p} className={ p === page ? "selected" : "" } onClick={() => handleChangePage(p)}>{p}</button>
-      ))}
-      <FiArrowRight size={22} color="#353b48" style={{ cursor: "pointer" }} onClick={() => handleChangePage(page + 1)} />
-    </div>
+    <>
+      <div className="select-page">
+        <FiArrowLeft size={22} color="#353b48" style={{ cursor: "pointer" }} onClick={() => handleChangePage(page - 1)} />
+        {pagesArray.map(p => (
+          <button key={p} className={ p === page ? "selected" : "" } onClick={() => handleChangePage(p)}>{p}</button>
+        ))}
+        <FiArrowRight size={22} color="#353b48" style={{ cursor: "pointer" }} onClick={() => handleChangePage(page + 1)} />
+      </div>
+
+      <div className="pages-available" >{amountPages.length} Pages available</div>
+    </>
   )
 }
 
@@ -77,6 +90,15 @@ const Home = () => {
   // The api list will only show apis that its country matchs with the sorted one
   function handleSelectCountry(event: ChangeEvent<HTMLSelectElement>) {
     setCountry(event.target.value);
+  }
+
+  // Send the user to paypal donate page
+  function handleClickDonate() {
+    const url = process.env.REACT_APP_PAYPAL_DONATE_URL as string;
+
+    console.log(url)
+
+    window.open(url, '_blank');
   }
 
   // Get pages number to SelectPage component show the exact number of pages available to be shown
@@ -224,6 +246,14 @@ const Home = () => {
 
         <SelectPage page={page} amountPages={pages} handleChangePage={handleChangePage} />
         
+      </div>
+
+      <div className="donate-section">
+        <h1>Is API Compass being useful to you? Help us with a small donation($12)! We are going to be very pleased!</h1>
+        <button className="donate-paypal" onClick={handleClickDonate} >
+          Donate with PayPal
+          <FaPaypal color="#fafafa" size={18} className="paypal-icon"/>
+        </button>
       </div>
       <Footer />
     </>

@@ -8,8 +8,11 @@ export async function up(knex: Knex) {
     table.string('email').notNullable();
     table.string('country').notNullable();
     table.string('password').notNullable();
-    table.string('api_ids');
+    table.string('api_ids').notNullable();
     table.string('liked_apis').notNullable();
+    table.string('followers').notNullable();
+    table.string('following').notNullable();
+    table.integer('score').notNullable();
   });
 }
 

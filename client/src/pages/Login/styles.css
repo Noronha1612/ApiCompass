@@ -1,4 +1,4 @@
-.login .box-container input {
+.login .box-container input:not([type=checkbox]) {
   border: none;
   border-radius: 22px;
   

@@ -55,8 +55,10 @@
   outline: none;
 }
 
-.cp-container form button {
+.cp-container form button, 
+.cp-container form .clickableDiv {
   padding: 6px 24px;
+  margin: 10px 0;
 
   background: #000;
   border: none;

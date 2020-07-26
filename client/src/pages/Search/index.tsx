@@ -2,7 +2,7 @@ import React from 'react';
 
 import "./styles.css";
 
-import queryString from 'query-string';
+//import queryString from 'query-string';
 
 interface SearchProps {
   location: {
@@ -11,7 +11,7 @@ interface SearchProps {
 }
 
 const Search: React.FC<SearchProps> = ({ location }) => {
-  const values = queryString.parse(location.search);
+  //const values = queryString.parse(location.search);
 
   return (
     <>

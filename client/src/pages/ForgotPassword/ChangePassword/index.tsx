@@ -2,6 +2,8 @@ import React, { useEffect, useState, FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 import jwt from 'jsonwebtoken';
 
+import useCheckLogged from '../../../utils/checkLogged';
+
 import ReturnArrow from '../../../components/ReturnArrow';
 
 import api from '../../../services/api';
@@ -48,8 +50,9 @@ const ChangePassword = () => {
 
             const payload = jwt.verify(jwtAuthToken, jwtTokenKey) as { userEmail: string };
 
-            const response = await api.put<ResponseApiChangePassword>('/users/changePassword', data, { headers: { user_email: payload.userEmail } });
+            await api.put<ResponseApiChangePassword>('/users/changePassword', data, { headers: { user_email: payload.userEmail } });
             
+            localStorage.removeItem('jwtAuthToken');
             history.push('/user/login');
         }
         catch(err) {
@@ -93,7 +96,9 @@ const ChangePassword = () => {
             history.push('/user/forgotPassword');
             return;
         }
-    }, []);
+    }, [ history ]);
+
+    useCheckLogged([]);
 
     return (
         <div className="form-container">

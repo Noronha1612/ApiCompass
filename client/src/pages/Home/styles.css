@@ -116,6 +116,21 @@
   padding: 8px 11px;
 }
 
+.main-homepage .pages-available {
+  width: 100%;
+  text-align: center;
+
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  font-style: italic;
+  color: #bcbcbc;
+
+  margin-top: 21px;
+
+  opacity: .75;
+}
+
 .main-homepage .select-api .sortItems {
   display: inline-flex;
 
@@ -138,4 +153,58 @@
 
   border: none;
   background-color: #f3f3f3;
+}
+
+.donate-section {
+  height: 200px;
+  width: 100%;
+  min-width: 450px;
+  background-color: #81818165;
+
+  padding: 40px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.donate-section h1 {
+  margin-bottom: 40px;
+
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 19px;
+  color: #fafafa;
+}
+
+.donate-section .donate-paypal {
+  padding: 6px 15px;
+
+  white-space: nowrap;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 18px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  color: #fafafa;
+
+  background: #007aba;
+  border: none;
+  border-radius: 8px;
+
+  cursor: pointer;
+  transition: .4s;
+  outline: none;
+}
+
+.donate-section .donate-paypal:hover {
+  background: #005ea6;
+}
+
+.donate-section .donate-paypal .paypal-icon {
+  margin-left: 5px;
 }

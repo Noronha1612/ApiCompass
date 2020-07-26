@@ -3,22 +3,9 @@ import { config } from 'dotenv';
 
 config();
 
-export default function sendMail({ userEmail  }: { userEmail: string }) {
-    const authCode = [];
-
-    for ( let x = 1; x <= 6; x++ ) {
-        const randomNumber = Math.floor(Math.random() * 10);
-
-        if (randomNumber === 10) {
-            authCode.push(9)
-            continue;
-        }
-
-        authCode.push(randomNumber);
-    }
-
+export default function sendMail({ userEmail, authCode  }: { userEmail: string, authCode: number[] }) {
     const transporter = createTransport({
-        host: 'smtp.gmail.com',
+        host: 'smtp-relay.sendinblue.com',
         port: 587,
         secure: false,
         auth: {
@@ -29,11 +16,10 @@ export default function sendMail({ userEmail  }: { userEmail: string }) {
     });
 
     transporter.sendMail({
+        sender:"API Compass Support",
         from: 'apicompass@support.com',
         to: userEmail,
         subject: 'Auth Code API Compass',
         html: `<h3 style="font-family: sans-serif;" >Your code: <strong>${authCode.join(' ')}</strong></h3>`
     });
-
-    return authCode.join('');
 }

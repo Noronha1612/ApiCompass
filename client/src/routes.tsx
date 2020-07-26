@@ -12,6 +12,8 @@ import Search from './pages/Search';
 import ForgotPasswordEmail from './pages/ForgotPassword/UserEmail';
 import ForgotPasswordCode from './pages/ForgotPassword/AuthCode';
 import ChangePassword from './pages/ForgotPassword/ChangePassword';
+import TermsAndConditions from './pages/TermsAndConditions';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 const Routes = () => {
   return (
@@ -28,6 +30,8 @@ const Routes = () => {
         <Route path="/user/forgotpassword" component={ ForgotPasswordEmail } />
         <Route path="/user/confirmCode" component={ ForgotPasswordCode } />
         <Route path="/user/changePassword" component={ ChangePassword } />
+        <Route path="/termsandconditions" component={ TermsAndConditions } />
+        <Route path="/privacypolicy" component={ PrivacyPolicy } />
       </Switch>
     </BrowserRouter>
   );

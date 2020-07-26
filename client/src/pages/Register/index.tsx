@@ -1,6 +1,8 @@
-import React, { FormEvent, useState, useEffect } from 'react';
+import React, { FormEvent, useState, useEffect, ChangeEvent } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
+
+import useCheckLogged from '../../utils/checkLogged';
 
 import api from '../../services/api';
 
@@ -36,6 +38,8 @@ const Login: React.FC = () => {
 
   const [ status, setStatus ] = useState(<div className="status statusgray">Enter the data</div>);
 
+  const [ checkBox, setCheckBox ] = useState(false);
+
   useEffect(() => {
     async function getCountryNames() {
       const response = await axios.get<CountryNames[]>('https://restcountries.eu/rest/v2/all?fields=nativeName;name');
@@ -48,6 +52,12 @@ const Login: React.FC = () => {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+
+    if ( !checkBox ) {
+      setStatus(<div className="status statusred">You must agree to Terms and Policy</div>);
+
+      return;
+    }
     
     const data = {
       name,
@@ -73,6 +83,12 @@ const Login: React.FC = () => {
 
     history.push('/');
   }
+
+  function handleClickCheckBox(e: ChangeEvent<HTMLInputElement>) {
+    setCheckBox(e.target.checked);
+  }
+
+  useCheckLogged([]);
 
   return (
     <>
@@ -135,6 +151,13 @@ const Login: React.FC = () => {
             ))}
 
           </select>
+          
+          <div className="checkbox-section">
+            <input type="checkbox" id="" onChange={handleClickCheckBox} />
+            <span>
+              I have read and agree to the <Link to="/termsandconditions">Terms and Conditions</Link> and <Link to="/privacypolicy">Privacy Policy</Link>
+            </span>
+          </div>
 
           <button type="submit">Register</button>
 

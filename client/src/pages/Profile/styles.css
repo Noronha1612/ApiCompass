@@ -1,0 +1,96 @@
+.profile-container {
+    min-height: 100vh;
+    min-width: 600px;
+
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 80px;
+}
+
+.profile-container .first-section {
+    display: inline-flex;
+
+    min-height: 400px;
+    min-width: 950px;
+
+    padding: 80px 70px;
+
+    background: linear-gradient(to right, #00273a, #00192a);
+}
+
+.profile-container .first-section .first-half {
+    width: 45%;
+}
+
+.profile-container .first-section .user-name {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 43px;
+
+    color: #dbe7e1;
+
+    margin-bottom: 18px;
+}
+
+.profile-container .first-section .edit-profile {
+    background: #c14135;
+    border: none;
+
+    color: #dbe7e1;
+
+    padding: 16px 12px;
+
+    font-size: 17px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+
+    cursor: pointer;
+    outline: none;
+}
+
+.profile-container .first-section .followage {
+    display: inline-flex;
+    margin-bottom: 40px;
+
+    color: #dbe7e1;
+}
+
+.profile-container .first-section .followage div {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: .4s;
+}
+
+.profile-container .first-section .followage div:hover {
+    letter-spacing: 1.8px;
+}
+
+.profile-container .first-section .followage div + div {
+    margin-left: 18px;
+}
+
+.profile-container .first-section .second-half {
+    width: 40%;
+
+    display: inline-flex;
+    justify-content: space-between;
+
+    padding: 70px 0px 0px 0px;
+}
+
+.profile-container .first-section .second-half .info-box {
+    background: #212121;
+
+    height: fit-content;
+
+    padding: 16px 28px;
+
+    color: #dbe7e1;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 19px;
+}

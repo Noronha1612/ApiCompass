@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import api from '../../../services/api';
 import jwt from 'jsonwebtoken';
 
+import useCheckLogged from '../../../utils/checkLogged';
+
 import ReturnArrow from '../../../components/ReturnArrow';
 
 import logo from '../../../assets/logo.png';
@@ -52,6 +54,8 @@ const ForgotPassword = () => {
       history.push('/user/confirmCode');
     }
   }, [ history ]);
+
+  useCheckLogged([]);
 
   return (
     <>
