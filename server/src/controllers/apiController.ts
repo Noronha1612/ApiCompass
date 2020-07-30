@@ -74,10 +74,6 @@ class apiController {
 
     const apiIdsArray = api_ids.split(',').map(e => parseInt(e));
 
-    if ( api_ids.length !== (apiIdsArray.length * 2) - 1) {
-      return response.status(406).json({ error: 'Bad format from api_ids', api_ids })
-    }
-
     const apisPromisse = apiIdsArray.map(async api_id => {
       const api = await knex('apis')
         .select('*')

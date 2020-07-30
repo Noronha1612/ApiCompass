@@ -160,24 +160,24 @@ const AuthCode = () => {
             <h6>The code will expire in 1 hour</h6>
 
             <div className="code-input">
-              <div>
+              <label htmlFor="btn1">
                 <input id="btn1" type="text" value={item1} onChange={e => handleChangeInput(e, setItem1, 1)} maxLength={1} />
-              </div>
-              <div>
+              </label>
+              <label htmlFor="btn2">
                 <input id="btn2" type="text" value={item2} onChange={e => handleChangeInput(e, setItem2, 2)} maxLength={1} />
-              </div>
-              <div>
+              </label>
+              <label htmlFor="btn3">
                 <input id="btn3" type="text" value={item3} onChange={e => handleChangeInput(e, setItem3, 3)} maxLength={1} />
-              </div>
-              <div>
+              </label>
+              <label htmlFor="btn4">
                 <input id="btn4" type="text" value={item4} onChange={e => handleChangeInput(e, setItem4, 4)} maxLength={1} />
-              </div>
-              <div>
+              </label>
+              <label htmlFor="btn5">
                 <input id="btn5" type="text" value={item5} onChange={e => handleChangeInput(e, setItem5, 5)} maxLength={1} />
-              </div>
-              <div>
+              </label>
+              <label htmlFor="btn6">
                 <input id="btn6" type="text" value={item6} onChange={e => handleChangeInput(e, setItem6, 6)} maxLength={1} />
-              </div>
+              </label>
             </div>
 
             <button type="submit" >Verify</button>

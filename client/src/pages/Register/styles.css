@@ -105,13 +105,13 @@
   cursor: pointer;
 }
 
-.register .box-container .checkbox-section span {
+.register .box-container .checkbox-section label {
   font-family: 'Roboto', sans-serif;
   font-weight: 500;
   font-size: 12px;
 }
 
-.register .box-container .checkbox-section span a {
+.register .box-container .checkbox-section label a {
   font-family: 'Ubuntu', sans-serif;
   font-size: 13px;
   font-weight: bold;

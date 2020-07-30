@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { FiSearch, FiUser } from 'react-icons/fi';
+import { FiSearch, FiUser, FiLogOut } from 'react-icons/fi';
 import { useHistory } from 'react-router-dom';
 import { verify } from 'jsonwebtoken';
 
@@ -31,27 +31,29 @@ const Header = () => {
 
   const [ searchItem, setSearchItem ] = useState('');
 
-  const [ userData, setUserData ] = useState<UserData>({
+  const defaultUserData = {
     id: '',
     name: '',
     email: '',
     api_ids: [],
     liked_apis: [],
     logged: false
-  });
+  }
+
+  const [ userData, setUserData ] = useState<UserData>(defaultUserData);
 
   const [ searchBoxClassName, setSearchBoxClassName ] = useState('search-box-unselected');
 
   useEffect(() => {
     const token = localStorage.getItem('user_token');
-    const tokenKey = process.env.REACT_APP_TOKEN_SECRET_KEY;
+    const tokenKey = process.env.REACT_APP_TOKEN_SECRET_KEY as string;
 
-    if ( !token || !tokenKey ) return;
+    if ( !token ) return;
 
     const userData = verify(token, tokenKey);
 
     setUserData(userData as UserData);
-  }, []);
+  }, [  ]);
 
   function handleMouseIn(color: string, url: string) {
     setLogoBack(color);
@@ -88,6 +90,12 @@ const Header = () => {
     e.preventDefault();
 
     history.push(`/search/?item=${searchItem}`);
+  }
+
+  function handleLogOut() {
+    localStorage.removeItem('user_token');
+    
+    window.location.reload();
   }
 
   return (
@@ -148,6 +156,8 @@ const Header = () => {
           { userData.logged && <span className="username">{userData.name}</span> }
           <FiUser size={28} color='#b9c3d0' className="icon" />
         </div>
+
+        { userData.logged && <button className="loggout-button" onClick={ handleLogOut }><FiLogOut /></button> }
       </div>
     </div>
   );

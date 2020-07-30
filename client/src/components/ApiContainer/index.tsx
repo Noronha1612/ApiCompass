@@ -18,6 +18,7 @@ interface ApiContainerProps {
   views: number;
   likes: number;
   api_country: string;
+  user_api?: boolean;
 }
 
 const ApiContainer: React.FC<ApiContainerProps> = (props) => {
@@ -135,14 +136,23 @@ const ApiContainer: React.FC<ApiContainerProps> = (props) => {
           </p>
         </div>
 
-        <div className="creator-name clickable" onClick={ handleClickCreatorName }>
+        {
+          props.user_api ? 
+          (<div className="creator-name clickable">
+            <div className="title">
+              Edit Profile
+            </div>
+          </div>)
+            :
+          (<div className="creator-name clickable" onClick={ handleClickCreatorName }>
           <div className="title">
             Creator's name:
           </div>
           <p>
             { creatorData.name }
           </p>
-        </div>
+        </div>)
+        }
 
       </div>
 

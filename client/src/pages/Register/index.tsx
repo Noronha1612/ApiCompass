@@ -153,10 +153,10 @@ const Login: React.FC = () => {
           </select>
           
           <div className="checkbox-section">
-            <input type="checkbox" id="" onChange={handleClickCheckBox} />
-            <span>
+            <input type="checkbox" id="chk" onChange={handleClickCheckBox} />
+            <label htmlFor="chk">
               I have read and agree to the <Link to="/termsandconditions">Terms and Conditions</Link> and <Link to="/privacypolicy">Privacy Policy</Link>
-            </span>
+            </label>
           </div>
 
           <button type="submit">Register</button>

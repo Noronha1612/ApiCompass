@@ -25,7 +25,7 @@
   max-width: 100%;
 }
 
-.cp-container form .code-input div {
+.cp-container form .code-input label {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -39,7 +39,7 @@
   cursor: text;
 }
 
-.cp-container form .code-input div input {
+.cp-container form .code-input label input {
   max-width: 40%;
   min-height: 60px;
 

@@ -14,6 +14,7 @@ import ForgotPasswordCode from './pages/ForgotPassword/AuthCode';
 import ChangePassword from './pages/ForgotPassword/ChangePassword';
 import TermsAndConditions from './pages/TermsAndConditions';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import Faq from './pages/Faq';
 
 const Routes = () => {
   return (
@@ -32,6 +33,7 @@ const Routes = () => {
         <Route path="/user/changePassword" component={ ChangePassword } />
         <Route path="/termsandconditions" component={ TermsAndConditions } />
         <Route path="/privacypolicy" component={ PrivacyPolicy } />
+        <Route path="/faq" component={ Faq } />
       </Switch>
     </BrowserRouter>
   );

@@ -81,7 +81,8 @@ class userController {
         liked_apis: data.liked_apis,
         followers: data.followers,
         following: data.following,
-        score: data.score
+        score: data.score,
+        logged: true
       });
 
       return response.json({ logged: true, jwToken: token });
@@ -119,7 +120,8 @@ class userController {
       liked_apis: userData.liked_apis,
       followers: userData.followers,
       following: userData.following,
-      score: userData.score
+      score: userData.score,
+      logged: true,
     });
     
     return response.json({ logged: true, jwToken: token });
