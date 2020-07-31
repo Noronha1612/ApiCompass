@@ -51,13 +51,7 @@ interface APIResponse {
   message?: string;
 }
 
-const NotUserProfile: React.FC<{user_id: string}> = ({ user_id }) => {
-  return (
-    <div>NotUserProfile</div>
-  )
-}
-
-const UserProfile: React.FC<{ user_id: string }> = ({ user_id }) => {
+const UserProfile: React.FC<{ user_id: string, loggedUser: boolean }> = ({ user_id, loggedUser }) => {
   const [ userData, setUserData ] = useState<UserData>({
     api_ids: '',
     name: '',
@@ -134,8 +128,6 @@ const UserProfile: React.FC<{ user_id: string }> = ({ user_id }) => {
     getLikedApis();
   }, [ userData ]);
 
-  console.log(likedApis)
-
   return (
     <div className="profile-container">
       <section className="first-section-main">
@@ -151,9 +143,20 @@ const UserProfile: React.FC<{ user_id: string }> = ({ user_id }) => {
             <div className="following">{userData.following ? userData.following.split(',').length : 0} Following</div>
           </div>
           <br/>
-          <button className="edit-profile">
-            Edit Profile
-          </button>
+          {
+            loggedUser ?
+              (
+                <button className="edit-profile">
+                  Edit Profile
+                </button>
+              )
+            :
+              ( 
+                <button className="edit-profile">
+                  Follow
+                </button>
+              )
+          }
         </div>
 
         <div className="user-info second-half">
@@ -199,7 +202,7 @@ const UserProfile: React.FC<{ user_id: string }> = ({ user_id }) => {
         <section className="second-box">
           <div className="background-color" style={{ backgroundColor: '#0c5b83' }}></div>
           <img src={logoPreto} alt="logo-branco-bg" className="bg"/>
-          <div className="title-section-profile">Your APIs</div>
+          <div className="title-section-profile">{loggedUser ? 'Your' : `${userData.name}'s`} APIs</div>
           <span className="amount-apis">{userApis.length} APIs shown</span>
 
           <div className="scrollable-div">
@@ -214,7 +217,7 @@ const UserProfile: React.FC<{ user_id: string }> = ({ user_id }) => {
                   name={api.apiName}
                   user_id={api.user_api_id}
                   views={api.views}
-                  user_api={true}
+                  user_api={loggedUser}
                 />
               )) }
             </section>
@@ -226,7 +229,7 @@ const UserProfile: React.FC<{ user_id: string }> = ({ user_id }) => {
 }
 
 const Profile: React.FC<ProfileProps> = ({ location }) => {
-  const values = queryString.parse(location.search);
+  const values = queryString.parse(location.search) as { user_id: string } ;
 
   const history = useHistory();
 
@@ -256,10 +259,13 @@ const Profile: React.FC<ProfileProps> = ({ location }) => {
     <>
       <Header/>
 
-      { userProfile ? <UserProfile user_id={ String(values.user_id) } /> : <NotUserProfile user_id={String(values.user_id)} /> }
+      <UserProfile 
+        user_id={values.user_id} 
+        loggedUser={userProfile}
+      />
 
       <Footer />
-    </>
+      </>
   )
 }
 

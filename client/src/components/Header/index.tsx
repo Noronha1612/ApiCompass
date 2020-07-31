@@ -95,6 +95,7 @@ const Header = () => {
   function handleLogOut() {
     localStorage.removeItem('user_token');
     
+    history.push('/');
     window.location.reload();
   }
 
