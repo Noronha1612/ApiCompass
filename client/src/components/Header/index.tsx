@@ -21,7 +21,15 @@ interface UserData {
   logged: boolean;
 }
 
-const Header = () => {
+const DropBox: React.FC = () => {
+  return (
+    <div>
+
+    </div>
+  )
+}
+
+const Header: React.FC = () => {
   const history = useHistory();
 
   const [ logoBack, setLogoBack ] = useState('#2f3640');

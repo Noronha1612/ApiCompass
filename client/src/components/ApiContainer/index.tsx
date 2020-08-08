@@ -42,12 +42,6 @@ const ApiContainer: React.FC<ApiContainerProps> = (props) => {
 
   async function handleDislike(logged: boolean) {
     if ( logged ) {
-      const loggedUserToken = localStorage.getItem('user_token') as string;
-
-      const tokenKey = process.env.REACT_APP_TOKEN_SECRET_KEY as string;
-
-      const { id: user_id } = jwt.verify( loggedUserToken, tokenKey ) as { id: string };
-
       await api.put('/apis/decrementLikes', null, { headers: {
         user_id,
         api_id: id
@@ -89,7 +83,7 @@ const ApiContainer: React.FC<ApiContainerProps> = (props) => {
   }
 
   function handleClickCreatorName() {
-
+    history.push(`/user/profile/?user_id=${user_id}`)
   }
 
   useEffect(() => {

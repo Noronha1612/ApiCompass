@@ -10,6 +10,7 @@ import ApiContainer from '../../components/ApiContainer';
 
 import logoBranco from '../../assets/logo-branco.png';
 import logoPreto from '../../assets/logo-preto.png';
+import logoProfile from '../../assets/bg-profile.png';
 
 import "./styles.css";
 
@@ -131,6 +132,7 @@ const UserProfile: React.FC<{ user_id: string, loggedUser: boolean }> = ({ user_
   return (
     <div className="profile-container">
       <section className="first-section-main">
+        <img src={logoProfile} alt="logo-profile"/>
         <div className="user-info first-half">
           <h1 className="user-name">
             { userData.name }

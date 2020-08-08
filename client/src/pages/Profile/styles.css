@@ -8,6 +8,10 @@
     margin-top: 80px;
 }
 
+.profile-container .first-section-main * {
+    z-index: 1;
+}
+
 .profile-container .first-section-main {
     display: inline-flex;
 
@@ -17,6 +21,15 @@
     padding: 80px 70px;
 
     background: linear-gradient(to right, #00273a, #00192a);
+}
+
+.profile-container .first-section-main img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    z-index: 0;
+    transform: translateY(80px);
 }
 
 .profile-container .first-section-main .first-half {
