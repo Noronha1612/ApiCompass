@@ -22,7 +22,7 @@
 }
 
 .header-container #half1 {
-  width: 47%;
+  width: 50%;
   min-width: 320px;
 }
 
@@ -118,123 +118,10 @@
 
 .header-container #half2 {
   align-items: center;
-  width: 53%;
+  width: 50%;
   min-width: 680px;
   padding-left: 8%;
-  padding-right: 3.5%;
-  justify-content: space-between;
-}
-
-.header-container #half2 section {
-  display: inline-flex;
-  height: 100%;
-  width: 65%;
-  padding-right: 5%;
-  justify-content: space-between;
-}
-
-.header-container #half2 .item {
-  background: rgba(255, 255, 255, .2);
-
-  min-width: 34%;
-  height: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  transform: skewX(-25deg);
-  transition: .4s;
-  overflow: hidden;
-  cursor: pointer
-}
-
-.header-container #half2 .item:hover {
-  background: rgba(255, 255, 255, .6);
-
-  min-width: 41%;
-}
-
-.header-container #half2 .item2 {
-  border-right: 2.2px solid #000;
-  border-left: 2.2px solid #000;
-}
-
-.header-container .item .itemtext {
-  transform: skewX(25deg);
-
-  font-size: 13px;
-  font-weight: bold;
-  font-family: 'Ubuntu', sans-serif;
-
-  white-space: nowrap;
-}
-
-@media screen and (max-width: 1483px) {
-  .header-container .item .itemtext {
-    font-size: 9px;
-  }
-}
-
-.header-container #half2 .profile-button {
-  border: 1.8px solid #b9c3d0;
-
-  width: 50px;
-  height: 50px;
-  margin-right: 18px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  border-radius: 50%;
-  
-  transition: .4s;
-  cursor: pointer;
-}
-
-.header-container #half2 .profile-button:hover {
-  background: #b9c3d034;
-}
-
-.header-container #half2 .profile-button-logged {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  color: #b9c3d0;
-
-  padding: 11px 12px;
-  
-  border: 1.8px solid #b9c3d0;
-  border-radius: 50px;
-
-  cursor: pointer;
-  transform: translateX(28px);
-
-  transition: background .4s;
-}
-
-.header-container #half2 .profile-button-logged span {
-  margin-right: 10px;
-}
-
-.header-container #half2 .profile-button-logged:hover {
-  background: #b9c3d03a;
-}
-
-.header-container #half2 .loggout-button {
-  margin-left: 18px;
-
-  background: none;
-  border: none;
-  color: #B9C3D0;
-
-  font-weight: 600;
-  font-size: 20px;
-
-  cursor: pointer;
-  outline: none;
+  padding-right: 6.5%;
+  justify-content: flex-end;
+  background: rgba(255, 255, 255, .1);
 }

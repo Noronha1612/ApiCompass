@@ -178,7 +178,6 @@ const UserProfile: React.FC<{ user_id: string, loggedUser: boolean }> = ({ user_
 
       <section className="second-section-main">
         <section className="first-box">
-          <div className="background-color" style={{ backgroundColor: '#000e20' }}></div>
           <img src={logoBranco} alt="logo-branco-bg" className="bg"/>
           <div className="title-section-profile">Liked APIs</div>
           <span className="amount-apis">{likedApis.length} APIs shown</span>
@@ -202,7 +201,6 @@ const UserProfile: React.FC<{ user_id: string, loggedUser: boolean }> = ({ user_
         </section>
 
         <section className="second-box">
-          <div className="background-color" style={{ backgroundColor: '#0c5b83' }}></div>
           <img src={logoPreto} alt="logo-branco-bg" className="bg"/>
           <div className="title-section-profile">{loggedUser ? 'Your' : `${userData.name}'s`} APIs</div>
           <span className="amount-apis">{userApis.length} APIs shown</span>

@@ -4,6 +4,7 @@ import { FaPaypal } from 'react-icons/fa';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
 
+import Select, { ValueType } from 'react-select';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import ApiContainer from '../../components/ApiContainer';
@@ -33,6 +34,11 @@ interface SelectPageProps {
 
 interface Countries {
   name: string;
+}
+
+interface SelectComponentProps {
+  value: string;
+  label: string;
 }
 
 const SelectPage: React.FC<SelectPageProps> = ({ page, amountPages, handleChangePage }) => {
@@ -66,30 +72,16 @@ const Home = () => {
   const [ apiList, setApiList ] = useState<ApiItem[]>([]);
 
   const [ allCountries, setAllCountries ] = useState<Countries[]>([]);
-  const [ country, setCountry ] = useState("0");
+  const [ country, setCountry ] = useState<SelectComponentProps>({ value: '0', label: "Filter by country" });
 
-  const [ sortType, setSortType ] = useState('id');
-  const [ order, setOrder ] = useState('desc');
-
-  function handleChangeOrder(event: ChangeEvent<HTMLSelectElement>) {
-    setOrder(event.target.value);
-  }
+  const [ sortType, setSortType ] = useState<SelectComponentProps>({ value: 'id', label: 'Age' });
+  const [ order, setOrder ] = useState<SelectComponentProps>({ value: 'desc', label: 'Desc' });
 
   // Changes pages on SelectPage component
   function handleChangePage(page: number) {
     if ( !pages.includes(page) ) return;
 
     setPage(page);
-  }
-
-  // Sort the api list by sort type
-  function handleSelectSortType(event: ChangeEvent<HTMLSelectElement>) {
-    setSortType(event.target.value);
-  }
-
-  // The api list will only show apis that its country matchs with the sorted one
-  function handleSelectCountry(event: ChangeEvent<HTMLSelectElement>) {
-    setCountry(event.target.value);
   }
 
   // Send the user to paypal donate page
@@ -137,13 +129,13 @@ const Home = () => {
   // When Sort type select changes this useEffect will load up the sorted apiList instead the other one
   useEffect(() => {
     async function loadApiList() {
-      if ( country === '0' ) {
-        const response = await api.get<ApiItem[]>(`/apis/list?page=${page}&${sortType}Type=${order}`);
+      if ( country.value === '0' ) {
+        const response = await api.get<ApiItem[]>(`/apis/list?page=${page}&${sortType.value}Type=${order.value}`);
 
         setApiList(response.data);
       }
       else {
-        const response = await api.get<ApiItem[]>(`apis/list?page=${page}&country=${country}&${sortType}Type=${order}`);
+        const response = await api.get<ApiItem[]>(`apis/list?page=${page}&country=${country.value}&${sortType.value}Type=${order.value}`);
 
         setApiList(response.data);
       }
@@ -155,9 +147,9 @@ const Home = () => {
   // Update number of pages available with a country filter
   useEffect(() => {
     async function getPages() {
-      const response = await api.get<{pages: number[]}>(country === '0'? 
+      const response = await api.get<{pages: number[]}>(country.value === '0'? 
         'apis/list/getPages' :
-        `apis/list/getPages?country=${country}`);
+        `apis/list/getPages?country=${country.value}`);
       
       setPage(1);
 
@@ -209,23 +201,36 @@ const Home = () => {
         <section className="select-api" >
 
           <div className="sortItems">
-            <select name="sortType" className="sortType" onChange={handleSelectSortType} >
-              <option value="id">Age</option>
-              <option value="likes">Likes</option>
-              <option value="views">Views</option>
-            </select>
+            <Select
+              value={ sortType }
+              className="sortType"
+              onChange={value => setSortType(value as SelectComponentProps)}
+              options={[
+                { value: "age", label: "Age" },
+                { value: "likes", label: "Likes" },
+                { value: "views", label: "Views" }
+              ]} 
+            />
 
-            <select name="sortCountry" className="sortType" onChange={handleSelectCountry} >
-              <option value="0">Select a country</option>
+            <Select 
+              value={country}
+              className="sortType"
+              onChange={ value => setCountry(value as SelectComponentProps) }
+              options={[
+                { value: '0', label: 'Filter by country' },
+                ...allCountries.map(({ name }) => ({ label: name, value: name }))
+              ]}
+            />
 
-              {allCountries.map(({ name }) => <option value={name} key={name}>{name}</option>)}
-
-            </select>
-
-            <select name="sortOrder" className="sortType" onChange={handleChangeOrder}>
-              <option value="desc">Desc</option>
-              <option value="asc">Asc</option>
-            </select>
+            <Select 
+              value={order}
+              className="sortType"
+              onChange={ value => setOrder(value as SelectComponentProps) }
+              options={[
+                { value: 'desc', label: 'Desc' },
+                { value: 'asc', label: 'Asc' }
+              ]}
+            />
           </div>
           
 

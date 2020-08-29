@@ -144,7 +144,7 @@
 }
 
 .main-homepage .select-api .sortType {
-  width: 150px;
+  width: 190px;
   margin: 0px 18px;
   padding: 4px 6px;
 
@@ -152,10 +152,8 @@
   font-family: 'Roboto', sans-serif;
 
   outline: none;
-  cursor: pointer;
 
   border: none;
-  background-color: #f3f3f3;
 }
 
 .donate-section {

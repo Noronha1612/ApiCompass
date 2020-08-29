@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent, HTMLAttributes } from 'react';
 import { FiSearch, FiUser, FiLogOut } from 'react-icons/fi';
 import { useHistory } from 'react-router-dom';
 import { verify } from 'jsonwebtoken';
@@ -21,10 +21,14 @@ interface UserData {
   logged: boolean;
 }
 
-const DropBox: React.FC = () => {
-  return (
-    <div>
+interface MenuProps extends HTMLAttributes<HTMLDivElement> {
+  userName?: string;
+}
 
+const Menu: React.FC<MenuProps> = ({ userName, ...props }) => {
+  return (
+    <div {...props}>
+      Menu
     </div>
   )
 }
@@ -136,8 +140,8 @@ const Header: React.FC = () => {
         </div>
       </div>
 
-      <div className="half" id="half2">
-        <section>
+       <div className="half" id="half2">
+        {/* <section>
           <div 
             className="item item1"
             onClick={() => { history.push('/news') }}
@@ -164,9 +168,11 @@ const Header: React.FC = () => {
         >
           { userData.logged && <span className="username">{userData.name}</span> }
           <FiUser size={28} color='#b9c3d0' className="icon" />
-        </div>
+        </div>*/}
 
-        { userData.logged && <button className="loggout-button" onClick={ handleLogOut }><FiLogOut /></button> }
+        
+        <Menu userName={userData.name && userData.name} />
+        { userData.logged && <button className="loggout-button" onClick={ handleLogOut }><FiLogOut /> Log out</button> } 
       </div>
     </div>
   );
