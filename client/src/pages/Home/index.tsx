@@ -1,10 +1,10 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 import { FaPaypal } from 'react-icons/fa';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
 
-import Select, { ValueType } from 'react-select';
+import Select from 'react-select';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import ApiContainer from '../../components/ApiContainer';

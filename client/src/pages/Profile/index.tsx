@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 
 import api from '../../services/api';
 
+import { Scrollbars } from 'react-custom-scrollbars';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import ApiContainer from '../../components/ApiContainer';
@@ -183,20 +184,26 @@ const UserProfile: React.FC<{ user_id: string, loggedUser: boolean }> = ({ user_
           <span className="amount-apis">{likedApis.length} APIs shown</span>
 
           <div className="scrollable-div">
-            <section className="api-list">
-              { likedApis.map(api => (
-                <ApiContainer
-                  key={api.id} 
-                  api_country={api.apiCountry}
-                  description={api.description}
-                  id={api.id}
-                  likes={api.likes}
-                  name={api.apiName}
-                  user_id={api.user_api_id}
-                  views={api.views}
-                />
-              )) }
-            </section>
+            <Scrollbars 
+              style={{ width: '100%', height: '100%' }} 
+              renderThumbHorizontal={() => <div style={{ backgroundColor: '#0C5B83', borderRadius: 30 }} />} 
+              renderThumbVertical={() => <div style={{ backgroundColor: '#0C5B83', borderRadius: 30 }} />} 
+            >
+              <section className="api-list">
+                { likedApis.map(api => (
+                  <ApiContainer
+                    key={api.id} 
+                    api_country={api.apiCountry}
+                    description={api.description}
+                    id={api.id}
+                    likes={api.likes}
+                    name={api.apiName}
+                    user_id={api.user_api_id}
+                    views={api.views}
+                  />
+                )) }
+              </section>
+            </Scrollbars>
           </div>
         </section>
 
@@ -206,21 +213,27 @@ const UserProfile: React.FC<{ user_id: string, loggedUser: boolean }> = ({ user_
           <span className="amount-apis">{userApis.length} APIs shown</span>
 
           <div className="scrollable-div">
-            <section className="api-list">
-              { userApis.map(api => (
-                <ApiContainer
-                  key={api.id} 
-                  api_country={api.apiCountry}
-                  description={api.description}
-                  id={api.id}
-                  likes={api.likes}
-                  name={api.apiName}
-                  user_id={api.user_api_id}
-                  views={api.views}
-                  user_api={loggedUser}
-                />
-              )) }
-            </section>
+            <Scrollbars 
+              style={{ height: '100%' }}
+              renderThumbHorizontal={() => <div style={{ backgroundColor: '#000E20', borderRadius: 30 }} />} 
+              renderThumbVertical={() => <div style={{ backgroundColor: '#000E20', borderRadius: 30 }} />} 
+            >
+              <section className="api-list">
+                { userApis.map(api => (
+                  <ApiContainer
+                    key={api.id} 
+                    api_country={api.apiCountry}
+                    description={api.description}
+                    id={api.id}
+                    likes={api.likes}
+                    name={api.apiName}
+                    user_id={api.user_api_id}
+                    views={api.views}
+                    user_api={loggedUser}
+                  />
+                  )) }
+                </section>
+            </Scrollbars>
           </div>
         </section>
       </section>
